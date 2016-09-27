@@ -45,3 +45,19 @@ footer {
     border-top: 1px solid #ddd;
     min-width: 100%;
 }
+
+.root-link {
+    color: #874444;
+}
+
+.root-link:focus {
+    color: #874444;
+}
+
+.title {
+    margin-top: 25px;
+    font-family : "Comic Sans MS", cursive, sans-serif;
+    text-align: center;
+    font-size: 16px;
+    margin-left: 10%;
+}
