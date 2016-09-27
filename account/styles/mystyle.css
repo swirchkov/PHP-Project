@@ -1,0 +1,47 @@
+.login-form{
+    margin-top: 40px;
+
+    border-bottom : 3px solid #ddd;
+    border-bottom-left-radius: 170px;
+    border-bottom-right-radius: 170px;
+}
+
+.form-header {
+    text-align: center;
+    border-bottom: 1px #ddd solid;
+    font-style: italic;
+    font-size: 18px;
+}
+
+.margin-bottom-15 {
+    margin-bottom: 15px;
+}
+
+input[type='password'] {
+    max-width: 320px;
+}
+
+label {
+    padding-top: 8px;
+}
+
+.form-footer {
+    border-top: 1px #ddd solid;
+}
+
+.enter-btn {
+    color: #874444;
+    background-color: #ddd;
+    border-color: #ddd;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    padding: 10px;
+    font-weight: bolder;
+    font-style: italic;
+    border-top: 1px solid #ddd;
+    min-width: 100%;
+}
