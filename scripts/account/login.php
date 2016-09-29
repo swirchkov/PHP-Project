@@ -6,9 +6,9 @@
 
     $repo = new UserRepository();
 
-    $res = $repo.loginUser($login, $password);
-
+    $res = $repo->loginUser($login, $password);
+    require_once('../config.php');
     if (!$res) {
-        return header("Location: http://test.ru/account/badlogin.html");
+        return header("Location: ".$hostAddress."/account/badlogin.html");
     } 
 ?>
