@@ -11,9 +11,21 @@
         </a>
     </div>
 
-    <div class='col-md-2 col-lg-2 text-center link-container'>
+    <div class='col-md-2 col-lg-2 text-center link-container' *ngIf = ' user == null '>
         <a routerLink='/login'> Login </a>
         <a routerLink='/register'> Register </a>
+    </div>
+
+    <div class='col-md-2 col-lg-2 text-center link-container' *ngIf = ' user != null '>
+        <a class='dropdown-toggle' type='button' data-toggle='dropdown'> 
+            Hello, {{ user.Login }} 
+            <span class='caret'></span>
+        </a>
+
+        <ul class="dropdown-menu">
+            <li> <a> Profile </a> </li>
+            <li> <a> Exit </a> </li>
+        </ul>
     </div>
 
 </header>

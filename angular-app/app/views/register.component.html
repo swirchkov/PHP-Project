@@ -19,7 +19,7 @@
         
     <main class="col-lg-offset-3 col-lg-6">
             
-        <form method='POST' class='login-form'>
+        <form method='POST' class='login-form' #registerForm = 'ngForm'>
                 
             <div class='form-group form-header'>
                 Create new account
@@ -32,8 +32,17 @@
                 </label>
 
                 <div class='col-lg-8 margin-bottom-15'>
-                    <input type='text' class="form-control" placeholder='your login' />
+                    <input type='text' required class="form-control" placeholder='your login' [(ngModel)]='user.Login' name='Login' 
+                    #login = 'ngModel' />
+
+                    <div [hidden] = '!login.touched || login.valid' class="alert alert-danger field-alert">
+                        Login is required
+                    </div> 
+                    <div [hidden] = 'isFreeLogin' class="alert alert-danger field-alert">
+                        Login is already taken
+                    </div> 
                 </div>
+
 
             </div>
 
@@ -44,7 +53,12 @@
                 </label>
 
                 <div class='col-lg-8 margin-bottom-15'>
-                    <input type='text' class="form-control" placeholder='your email' />
+                    <input type='email' class="form-control" placeholder='your email' [(ngModel)] = 'user.Email' name ='email' 
+                        required #email="ngModel" pattern="[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+"/>
+                    
+                    <div [hidden] = '!email.touched || email.valid' class="alert alert-danger field-alert">
+                        Invalid email
+                    </div> 
                 </div>
 
             </div>
@@ -56,7 +70,12 @@
                 </label>
 
                 <div class='col-lg-8 margin-bottom-15'>
-                    <input type='password' class="form-control" placeholder='your password' />
+                    <input type='password' class="form-control" placeholder='your password' [(ngModel)] = 'user.Password' 
+                    name = 'password' required minlength="6" #password='ngModel' />
+
+                    <div [hidden] = '!password.touched || password.valid' class="alert alert-danger field-alert">
+                        Invalid password
+                    </div>
                 </div>
 
             </div>
@@ -68,14 +87,21 @@
                 </label>
 
                 <div class='col-lg-8 margin-bottom-15'>
-                    <input type='password' class="form-control" placeholder='confirm password' />
+                    <input type='password' class="form-control" placeholder='confirm password' [(ngModel)] = 'confirmPassword' 
+                    name='confirmPassword' #confirmation = 'ngModel' />
+
+                     <div [hidden] = '!confirmation.touched || confirmPassword == user.Password' 
+                        class="alert alert-danger field-alert">
+                        Password's doesn't match
+                    </div>
                 </div>
 
             </div>
 
             <div class="form-group text-center">
                     
-                <button class="btn enter-btn">
+                <button type='submit' class="btn enter-btn" (click)='registerUser()' 
+                    [disabled] = '!registerForm.form.valid || confirmPassword != user.Password'>
                     Register
                 </button>
                     

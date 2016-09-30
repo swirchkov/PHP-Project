@@ -21,6 +21,10 @@ input[type='password'] {
     max-width: 320px;
 }
 
+input[type='email'] {
+    max-width: 320px;
+}
+
 label {
     padding-top: 8px;
 }
@@ -60,4 +64,11 @@ footer {
     text-align: center;
     font-size: 16px;
     margin-left: 10%;
+}
+
+.field-alert {
+    margin : 0 !important;
+    padding: 5px !important;
+    margin-top: 15px !important;
+    max-width: 320px;
 }

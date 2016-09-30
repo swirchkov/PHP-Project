@@ -4,19 +4,22 @@
         
         function __construct() {
             require_once('../models/user.php');
-            require_once('../config.php');
         }
 
         public function loginUser($login, $password) {
+
+            include('../config.php');
             
             $link = mysqli_connect($host, $dbUser, $dbPassword, $database) 
                 or die("Ошибка " . mysqli_error($link));
-
-            $password = password_hash($password, PASSWORD_BCRYPT);
             
-            $result = mysqli_query("Select * FROM Users Where Login =". $login .' AND Password='.$password, $link);
+            $result = mysqli_query($link, "Select Id, Login, Password, Email FROM Users Where Login ='". $login."';");
 
-            $row = mysqli_fetch_row($result); 
+            if (!$result) {
+                return false;
+            }
+
+            $row = mysqli_fetch_row($result);
 
             if (!$row) {
                 return false;
@@ -24,13 +27,17 @@
 
             $id = $row[0];
             $login = $row[1];
-            $password = $row[2];
+            $pass = $row[2];
             $email = $row[3];
 
             mysqli_free_result($result);
             mysqli_close($link);
 
-            return new User($login, $password, $email, $id);
+            if ($pass == $password) {
+                return new User($login, $pass, $email, $id);
+            }
+
+            return null;
         }
 
         public function registerUser($login, $email, $pass) {
@@ -39,17 +46,32 @@
 
             $login = htmlentities(mysqli_real_escape_string($dbLink, $login));
             $email = htmlentities(mysqli_real_escape_string($dbLink, $email));
+            $pass = htmlentities(mysqli_real_escape_string($dbLink, $pass));
 
-            $password = crypt($pass);
+            if (!$this->isFreeLogin($dbLink, $login)) {
+                return false;
+            }
 
             $query = 'INSERT INTO users ( Login, Password, Email) 
-                                    VALUES ("'.$login.'", "'.$password.'", "'.$email.'" )';
+                                    VALUES ("'.$login.'", "'.$pass.'", "'.$email.'" )';
             
             $result = mysqli_query($dbLink, $query) or die("Ошибка " . mysqli_error($dbLink));
 
             mysqli_close($dbLink);
 
             return $result;
+        }
+
+        private function isFreeLogin($dbLink, $login) {
+            $query = "SELECT * FROM users WHERE Login ='".$login."';";
+
+            $result = mysqli_query($dbLink, $query) or die("Ошибка " . mysqli_error($dbLink));
+
+            if ( $result == false) { return false; }
+
+            $row = mysqli_fetch_row($result);
+
+            return $row == false;
         }
 
     }

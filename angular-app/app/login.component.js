@@ -8,17 +8,46 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+// angular
 var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+// models
+var user_1 = require("./models/user");
+var error_1 = require("./models/error");
+//service
+var user_service_1 = require("./services/user.service");
+// constraints
+var constraints_1 = require('./constraints');
 var LoginComponent = (function () {
-    function LoginComponent() {
+    function LoginComponent(service, router) {
+        this.service = service;
+        this.router = router;
+        this.user = new user_1.User();
+        this.error = null;
     }
+    LoginComponent.prototype.loginUser = function () {
+        var _this = this;
+        // save user somewhere and redirect to main page
+        this.service.loginUser(this.user).then(function (user) {
+            if (user == null) {
+                _this.authenticationFail();
+                return;
+            }
+            constraints_1.Constraints.AuthenticatedUser = user;
+            _this.user = user;
+            _this.router.navigate(['notes']);
+        });
+    };
+    LoginComponent.prototype.authenticationFail = function () {
+        this.error = new error_1.Error('', 'invalid login or password');
+    };
     LoginComponent = __decorate([
         core_1.Component({
             selector: 'login-component',
             templateUrl: 'app/views/login.component.html',
             styleUrls: ['app/styles/login.component.css', 'app/styles/header.css']
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router])
     ], LoginComponent);
     return LoginComponent;
 }());

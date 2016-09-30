@@ -13,23 +13,16 @@
                 $this->id = $id;
         }
 
-        public function getId() { return id; }
+        public function getId() { return $this->id; }
 
-        public function getLogin() { return $login; }
+        public function getLogin() { return $this->login; }
+        public function setLogin($value) { $this->login = $value; }
 
-        public function setLogin($value) {
-            $login = $value;
-        }
+        public function getEmail() { return $this->email; }
+        public function setEmail($value) { $this->email = $value; }
 
-        public function getEmail() { return $email; }
-
-        public function setEmail($value) {
-            $email = $value;
-        }
-
-        public function getPassword() { return $password; }
-
-        public function setPassword($value) { $password = $value; }
+        public function getPassword() { return $this->password; }
+        public function setPassword($value) { $this->password = $value; }
     }
 
 ?>

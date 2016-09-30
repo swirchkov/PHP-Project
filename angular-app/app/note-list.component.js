@@ -9,8 +9,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
+// constraints
+var constraints_1 = require("./constraints");
 var NoteListComponent = (function () {
     function NoteListComponent() {
+        this.user = constraints_1.Constraints.AuthenticatedUser;
+        console.log(this.user);
     }
     NoteListComponent = __decorate([
         core_1.Component({

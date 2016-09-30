@@ -1,14 +1,25 @@
 <?php 
-    $login = $_POST['login'];
-    $password = $_POST['password'];
+    // for ajax calls
+    header('Access-Control-Allow-Origin: *'); 
+    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
+    // parsing post body ofd request
+    $entityBody = file_get_contents('php://input');
+    $receivedObj = json_decode($entityBody);
+
+    $login = $receivedObj->login;
+    $password = $receivedObj->password;
 
     require_once('../repositories/userRepository.php');
 
     $repo = new UserRepository();
 
     $res = $repo->loginUser($login, $password);
-    require_once('../config.php');
+
     if (!$res) {
-        return header("Location: ".$hostAddress."/account/badlogin.html");
+        echo json_encode(null);
     } 
+    else {
+        echo json_encode(array('login' => $res->getLogin(), 'password' => $res->getPassword(), 'email' => $res->getEmail()));
+    }
 ?>
