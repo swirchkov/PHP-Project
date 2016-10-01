@@ -1,0 +1,91 @@
+<header class='row header-row'>    
+
+    <div class=' col-md-2 col-lg-2 text-center'>
+        <h3> ITBlog </h3>
+    </div>
+
+    <div class='col-md-6 col-lg-6 search-container'>
+        <input type='text' placeholder='Enter search query'  class='form-control col-lg-offset-4 search-query' 
+            (ngModelChange)='searchByQuery($event)' [ngModel]='query'/>
+    </div>
+
+    <div class='col-md-2 col-lg-2 text-center link-container' *ngIf = ' user == null '>
+        <a routerLink='/login'> Login </a>
+        <a routerLink='/register'> Register </a>
+    </div>
+
+    <div class='col-md-2 col-lg-2 text-center link-container' *ngIf = ' user != null '>
+        <a class='dropdown-toggle' type='button' data-toggle='dropdown'> 
+            Hello, {{ user.Login }} 
+            <span class='caret'></span>
+        </a>
+
+        <ul class="dropdown-menu">
+            <li> <a> Profile </a> </li>
+            <li> <a> Exit </a> </li>
+        </ul>
+    </div>
+
+</header>
+
+<div class="row main-container">
+        
+    <main class="col-lg-9 col-md-9 note-container "> 
+        <div class='no-articles' [hidden] = 'articles.length > 0'>
+            Unfortunaly we can't find any article
+        </div>
+        
+        <div class='panel panel-default' *ngFor='let article of articles' [hidden]='articles.length == 0'>
+            
+            <div class='panel-heading'>
+                {{ article.Title }}
+            </div>
+            
+            <div class='panel-body'>
+                <img [src]='article.ImageUrl' class='img-rounded left-img' width='220' height='150' />
+                {{ article.Text }}
+            </div>
+
+            <div class='panel-footer back-white'>
+
+                <a *ngFor='let tag of article.Tags' (click)='filterArticlesByTag(tag)'
+                    [class]='selectedTag == tag ? "note-tag active" : "note-tag" ' >
+                    {{ tag }}
+                </a>
+
+                <span class='article-author'>
+                    Author -> {{ article.AuthorName }}
+                </span>
+
+                <a class='go-link' (click) = 'gotoArticle(article)'>
+                    Go to article
+                </a>
+
+            </div>
+        </div>
+
+    </main>
+
+    <aside class="categories-aside">
+
+        <h4 class='text-center'> Tags </h4>
+
+        <a *ngFor='let tag of tags' (click)='filterArticlesByTag(tag.Tag)'
+            [class] = 'selectedTag == tag.Tag ? "tag-link active" : "tag-link" '>
+            {{ tag.Tag }}
+        </a>
+
+        <a [class] = 'query == null || query == "" ? "display-none" : "all-articles" '
+            (click) = 'resetQuery()' >
+            All Articles
+        </a>
+
+    </aside>
+
+</div>
+
+<footer>
+    2016 by Swirchkov Wladymir & Grynko Alina & Kovalenko Ekaterina 
+</footer>
+
+<script src='../styles/style.js'> </script>

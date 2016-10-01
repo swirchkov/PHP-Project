@@ -4,17 +4,17 @@ import { Routes, RouterModule } from "@angular/router";
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login.component';
 import { RegisterComponent } from "./register.component";
-import { NoteListComponent } from './note-list.component';
+import { ArticleListComponent } from './article-list.component';
 
 const appRoutes: Routes = [
     {
         path: '',
-        redirectTo : '/notes',
+        redirectTo : '/articles',
         pathMatch: 'full'
     },
     {
-        path: 'notes',
-        component: NoteListComponent
+        path: 'articles',
+        component: ArticleListComponent
     },
     {
         path: 'login',

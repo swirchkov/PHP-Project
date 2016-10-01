@@ -15,13 +15,15 @@ var forms_1 = require("@angular/forms");
 var http_1 = require("@angular/http");
 // components
 var app_component_1 = require("./app.component");
-var note_list_component_1 = require("./note-list.component");
+var article_list_component_1 = require("./article-list.component");
 var login_component_1 = require("./login.component");
 var register_component_1 = require("./register.component");
 // routing
 var app_routing_1 = require("./app.routing");
 // services
 var user_service_1 = require("./services/user.service");
+var article_service_1 = require("./services/article.service");
+var tag_service_1 = require("./services/tag.service");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -35,12 +37,14 @@ var AppModule = (function () {
             ],
             declarations: [
                 app_component_1.AppComponent,
-                note_list_component_1.NoteListComponent,
+                article_list_component_1.ArticleListComponent,
                 login_component_1.LoginComponent,
                 register_component_1.RegisterComponent
             ],
             providers: [
-                user_service_1.UserService
+                user_service_1.UserService,
+                article_service_1.ArticleService,
+                tag_service_1.TagService
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

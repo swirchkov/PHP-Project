@@ -35,7 +35,7 @@ export class LoginComponent {
             Constraints.AuthenticatedUser = user;
             this.user = user; 
 
-            this.router.navigate(['notes']);
+            this.router.navigate(['articles']);
         });
     }
 

@@ -72,16 +72,21 @@ input[type='text'] {
 .note-tag {
     color: #874444;
     padding: 4px;
+    cursor: pointer;
 }
 
     .note-tag + .note-tag {
         border-left: 1px solid #ddd;;
+    }
+    .note-tag.active {
+        background-color: #ddd;
     }
 
 .go-link {
     color: #874444;
     float: right;
     font-size: bigger;
+    cursor: pointer;
 }
 
 .tag-link {
@@ -96,7 +101,12 @@ input[type='text'] {
     border-bottom-right-radius: 20px;
 
     margin-bottom: 5px;
+    cursor: pointer;
 }
+
+    .tag-link.active {
+        background: white !important; 
+    }
 
 footer {
     margin-top: 30px;
@@ -120,4 +130,42 @@ footer {
 
 .search-query {
     display: inline-block !important;
+}
+
+.article-author {
+    font-style: italic;
+    color: #874444;
+    margin-left: 50px;
+    background-color: #eee;
+    border-radius: 3px;
+    padding: 5px; 
+}
+
+.no-articles {
+    margin-left: 40%;
+    margin-top: 50px;
+
+    font-weight: bolder;
+    color: #874444;
+
+    border: 1px solid #874444;
+    background-color: #eee;
+    border-radius: 10px;
+
+    max-width: 20%;
+    padding: 20px;
+}
+
+.all-articles {
+    margin-top : 15px;
+    color: #874444;
+    font-size: bigger;
+    text-align : center;
+    display: block;
+    cursor: pointer;
+    font-family: "Paytone One";
+}
+
+.display-none {
+    display: none;
 }

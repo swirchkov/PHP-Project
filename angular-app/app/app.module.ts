@@ -6,7 +6,7 @@ import { HttpModule } from "@angular/http";
 
 // components
 import { AppComponent } from "./app.component";
-import { NoteListComponent } from "./note-list.component";
+import { ArticleListComponent } from "./article-list.component";
 import { LoginComponent } from "./login.component";
 import { RegisterComponent } from "./register.component";
 
@@ -15,6 +15,10 @@ import { routing } from "./app.routing";
 
 // services
 import { UserService } from "./services/user.service";
+import { ArticleService } from "./services/article.service";
+import { TagService } from "./services/tag.service";
+
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -24,12 +28,14 @@ import { UserService } from "./services/user.service";
     ],
     declarations: [
         AppComponent,
-        NoteListComponent,
+        ArticleListComponent,
         LoginComponent,
         RegisterComponent
     ],
     providers : [
-        UserService
+        UserService,
+        ArticleService,
+        TagService
     ],
     bootstrap: [ AppComponent ]
 })

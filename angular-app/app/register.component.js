@@ -34,7 +34,7 @@ var RegisterComponent = (function () {
             }
             constraints_1.Constraints.AuthenticatedUser = user;
             _this.user = user;
-            _this.router.navigate(['notes']);
+            _this.router.navigate(['articles']);
         });
     };
     RegisterComponent = __decorate([
