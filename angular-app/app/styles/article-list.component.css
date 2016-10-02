@@ -50,6 +50,7 @@ input[type='text'] {
 
 .main-container {
     margin: 40px;
+    margin-bottom: 0;
 }
 
 .note-container {
@@ -89,6 +90,10 @@ input[type='text'] {
     cursor: pointer;
 }
 
+.tag-container {
+    min-height: 280px;
+}
+
 .tag-link {
     background: linear-gradient(90deg, white, #ddd, white);
     color: #874444;
@@ -96,6 +101,7 @@ input[type='text'] {
     text-align: center;
     display: block;
     font-style: italic;
+    font-size: 14px;
     
     border-top-right-radius: 50px;
     border-bottom-right-radius: 20px;
@@ -168,4 +174,47 @@ footer {
 
 .display-none {
     display: none;
+}
+
+.pagination-container {
+    text-align: center;
+    margin-top : 15px;
+    background-color: #ddd;
+    border-radius: 5px; 
+    padding: 10px;
+    margin-left: 30%;
+    max-width: 100px;
+}
+
+.pagination-left {
+    color: #874444;
+    margin-left: 3px;
+    cursor: pointer;
+}
+    .pagination-left:hover {
+        text-decoration: none;
+    }
+
+.pagination-home {
+    color: #874444;
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+    .pagination-home:hover {
+        text-decoration: none;
+    }
+
+.pagination-right {
+    color: #874444;
+    cursor: pointer;
+}
+
+.article-pagination-container {
+    margin-left: 40%;
+    margin-top: 0 !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }

@@ -12,27 +12,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 // mock 
 var mock_articles_1 = require('./mock.articles');
+// library
+var enumerable_1 = require('./../library/enumerable');
 var ArticleService = (function () {
     function ArticleService() {
         this.articleRootUrl = 'http://localhost/project/articles/';
         this.articles = mock_articles_1.ARTICLES;
     }
     ArticleService.prototype.getMostRelavantArticles = function (count) {
-        if (this.articles.length > count) {
-            return Promise.resolve(this.articles.slice(0, count));
-        }
-        return Promise.resolve(this.articles);
+        return Promise.resolve(new enumerable_1.Enumerable(this.articles, count));
     };
-    ArticleService.prototype.getArticlesByTag = function (tag) {
-        return Promise.resolve(this.articles.filter(function (value) {
+    ArticleService.prototype.getArticlesByTag = function (tag, count) {
+        return Promise.resolve(new enumerable_1.Enumerable(this.articles.filter(function (value) {
             return value.Tags.indexOf(tag) != -1;
-        }));
+        }), count));
     };
-    ArticleService.prototype.getArticlesByQuery = function (query) {
-        return Promise.resolve(this.articles.filter(function (value) {
+    ArticleService.prototype.getArticlesByQuery = function (query, count) {
+        return Promise.resolve(new enumerable_1.Enumerable(this.articles.filter(function (value) {
             query = query.toUpperCase();
             return value.Title.toUpperCase().indexOf(query) != -1;
-        }));
+        }), count));
     };
     ArticleService = __decorate([
         core_1.Injectable(), 

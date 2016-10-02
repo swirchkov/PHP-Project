@@ -15,14 +15,14 @@
     </div>
 
     <div class='col-md-2 col-lg-2 text-center link-container' *ngIf = ' user != null '>
-        <a class='dropdown-toggle' type='button' data-toggle='dropdown'> 
+        <a class='dropdown-toggle cursor-pointer' type='button' data-toggle='dropdown'> 
             Hello, {{ user.Login }} 
             <span class='caret'></span>
         </a>
 
         <ul class="dropdown-menu">
-            <li> <a> Profile </a> </li>
-            <li> <a> Exit </a> </li>
+            <li> <a class='cursor-pointer'> Profile </a> </li>
+            <li> <a class="cursor-pointer"> Exit </a> </li>
         </ul>
     </div>
 
@@ -70,19 +70,52 @@
 
         <h4 class='text-center'> Tags </h4>
 
-        <a *ngFor='let tag of tags' (click)='filterArticlesByTag(tag.Tag)'
-            [class] = 'selectedTag == tag.Tag ? "tag-link active" : "tag-link" '>
-            {{ tag.Tag }}
-        </a>
+        <div class='tag-container'>
+            <a *ngFor='let tag of tags' (click)='filterArticlesByTag(tag.Tag)'
+                [class] = 'selectedTag == tag.Tag ? "tag-link active" : "tag-link" '>
+                {{ tag.Tag }}
+            </a>
+        </div>
+
+        <div class='pagination-container' 
+            [hidden] = 'tagEnumerable != null && !tagEnumerable.canMoveBack() && ! tagEnumerable.canMoveNext() '>
+            <a class='pagination-left' [hidden]='tagEnumerable != null && !tagEnumerable.canMoveBack()'
+                (click)='this.tags = tagEnumerable.Previous();' >
+                <span class='glyphicon glyphicon-chevron-left'> </span> 
+            </a>
+            <a class='pagination-home'
+                (click)='this.tags = tagEnumerable.Reset()'>
+                <span class='glyphicon glyphicon-home'> </span> 
+            </a>
+            <a class='pagination-right' [hidden]='tagEnumerable != null && !tagEnumerable.canMoveNext()'
+                (click)='this.tags = tagEnumerable.Next();'>
+                <span class='glyphicon glyphicon-chevron-right'> </span> 
+            </a>
+        </div> 
 
         <a [class] = 'query == null || query == "" ? "display-none" : "all-articles" '
             (click) = 'resetQuery()' >
             All Articles
         </a>
-
     </aside>
 
 </div>
+
+<div class='pagination-container article-pagination-container' 
+    [hidden] = 'articleEnumerable != null && !articleEnumerable.canMoveBack() && !articleEnumerable.canMoveNext()'>
+    <a class='pagination-left' [hidden]='articleEnumerable == null || !articleEnumerable.canMoveBack()'
+        (click)='this.articles = articleEnumerable.Previous();' >
+        <span class='glyphicon glyphicon-chevron-left'> </span> 
+    </a>
+    <a class='pagination-home'
+        (click)='this.articles = articleEnumerable.Reset()'>
+        <span class='glyphicon glyphicon-home'> </span> 
+    </a>
+    <a class='pagination-right' [hidden]='articleEnumerable != null && !articleEnumerable.canMoveNext()'
+        (click)='this.articles = articleEnumerable.Next();'>
+        <span class='glyphicon glyphicon-chevron-right'> </span> 
+    </a>
+</div> 
 
 <footer>
     2016 by Swirchkov Wladymir & Grynko Alina & Kovalenko Ekaterina 

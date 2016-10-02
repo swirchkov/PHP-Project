@@ -12,6 +12,9 @@ import { TagService } from "./services/tag.service";
 // constraints
 import { Constraints } from "./constraints";
 
+// library
+import { Enumerable } from './library/enumerable';
+
 @Component({
     selector: 'article-list',
     templateUrl: "app/views/article-list.component.html",
@@ -27,33 +30,54 @@ export class ArticleListComponent implements OnInit {
     selectedTag : string = null;
     query : string = null;
 
+    tagEnumerable : Enumerable<Tag> = null;
+    articleEnumerable : Enumerable<Article> = null;
+
+    private articlesPerView = 2;
+    private tagsPerView = 8;
+
     constructor(private articleService : ArticleService, private tagService: TagService) {
         this.user = Constraints.AuthenticatedUser;
     }
 
+    private processArticleEnumerable(enumerable : Enumerable<Article> ) {
+        this.articleEnumerable = enumerable;
+        this.articles = this.articleEnumerable.Next();
+        console.log(enumerable);
+    }
+
+    private processTagEnumerable(enumerable : Enumerable<Tag>) {
+        this.tagEnumerable = enumerable;
+        this.tags = this.tagEnumerable.Next();
+    }
+
     ngOnInit() {
         // load articles and tags
-        this.articleService.getMostRelavantArticles(5).then((articles) => this.articles = articles);
-        this.tagService.getMostRelavantTags(8).then((tags) => this.tags = tags);
+        this.articleService.getMostRelavantArticles(this.articlesPerView).then((enumer) => this.processArticleEnumerable(enumer));
+        this.tagService.getMostRelavantTags(this.tagsPerView).then((enumer) => this.processTagEnumerable(enumer));
+
     }
 
     public filterArticlesByTag(tag: string) {
+        this.query = null;
+
         if (this.selectedTag == tag) {
             this.resetTagSearch();
             return;
         }
 
         this.selectedTag = tag;
-        this.articleService.getArticlesByTag(tag).then((articles) => { this.articles = articles });
+        this.articleService.getArticlesByTag(tag, this.articlesPerView).then((enumer) => this.processArticleEnumerable(enumer));
     }
 
     private resetTagSearch() {
         this.selectedTag = null;
-        this.articleService.getMostRelavantArticles(5).then((articles) => this.articles = articles);
+        this.articleService.getMostRelavantArticles(this.articlesPerView).then((enumer) => this.processArticleEnumerable(enumer));
 
     }
 
     public searchByQuery(query : string) {
+        this.selectedTag = null;
 
         if (query == "") {
             this.resetQuery();
@@ -62,12 +86,13 @@ export class ArticleListComponent implements OnInit {
 
         this.query = query;
 
-        this.articleService.getArticlesByQuery(query).then((articles) => this.articles = articles);
+        this.articleService.getArticlesByQuery(query, this.articlesPerView)
+                    .then((enumer) => this.processArticleEnumerable(enumer));
     }
 
     public resetQuery() {
         this.query = null;
-        this.articleService.getMostRelavantArticles(5).then((articles) => this.articles = articles);
+        this.articleService.getMostRelavantArticles(this.articlesPerView).then((enumer) => this.processArticleEnumerable(enumer));
     } 
 
     public gotoArticle(article: Article) {

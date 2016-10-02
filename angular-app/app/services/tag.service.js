@@ -12,15 +12,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 //mock
 var mock_tags_1 = require("./mock.tags");
+// library classes
+var enumerable_1 = require('./../library/enumerable');
 var TagService = (function () {
     function TagService() {
         this.tags = mock_tags_1.TAGS;
     }
     TagService.prototype.getMostRelavantTags = function (count) {
-        if (this.tags.length > count) {
-            return Promise.resolve(this.tags.slice(0, count));
-        }
-        return Promise.resolve(this.tags);
+        return Promise.resolve(new enumerable_1.Enumerable(this.tags, count));
     };
     TagService = __decorate([
         core_1.Injectable(), 

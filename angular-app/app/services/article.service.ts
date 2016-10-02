@@ -7,35 +7,34 @@ import { Article } from "./../models/article";
 // mock 
 import { ARTICLES } from './mock.articles'; 
 
+// library
+import { Enumerable } from './../library/enumerable';
+
 @Injectable()
 export class ArticleService {
     private articleRootUrl = 'http://localhost/project/articles/';
 
     private articles = ARTICLES;
 
-    public getMostRelavantArticles(count : number) : Promise<Article[]> {
-
-        if (this.articles.length > count) {
-            return Promise.resolve(this.articles.slice(0, count));
-        }
-        
-        return Promise.resolve(this.articles);
+    public getMostRelavantArticles(count : number) : Promise<Enumerable<Article>> {
+        return Promise.resolve(new Enumerable(this.articles, count));
     }
 
-    public getArticlesByTag(tag: string) : Promise<Article[]> {
+    public getArticlesByTag(tag: string, count : number) : Promise<Enumerable<Article>> {
         return Promise.resolve(
-            this.articles.filter((value) => {
+            new Enumerable( this.articles.filter((value) => {
                 return value.Tags.indexOf(tag) != -1;
-            })
+            }), count)
         );
     }
 
-    public getArticlesByQuery(query: string): Promise<Article[]> {
+    public getArticlesByQuery(query: string, count : number): Promise<Enumerable<Article>> {
         return Promise.resolve(
-             this.articles.filter((value) => {
-                query = query.toUpperCase();
-                return value.Title.toUpperCase().indexOf(query) != -1;
-            })
+             new Enumerable(
+                  this.articles.filter((value) => {
+                    query = query.toUpperCase();
+                    return value.Title.toUpperCase().indexOf(query) != -1;
+            }), count )
         );
     } 
 }

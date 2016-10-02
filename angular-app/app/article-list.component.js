@@ -21,41 +21,57 @@ var ArticleListComponent = (function () {
         this.articles = [];
         this.selectedTag = null;
         this.query = null;
+        this.tagEnumerable = null;
+        this.articleEnumerable = null;
+        this.articlesPerView = 2;
+        this.tagsPerView = 8;
         this.user = constraints_1.Constraints.AuthenticatedUser;
     }
+    ArticleListComponent.prototype.processArticleEnumerable = function (enumerable) {
+        this.articleEnumerable = enumerable;
+        this.articles = this.articleEnumerable.Next();
+        console.log(enumerable);
+    };
+    ArticleListComponent.prototype.processTagEnumerable = function (enumerable) {
+        this.tagEnumerable = enumerable;
+        this.tags = this.tagEnumerable.Next();
+    };
     ArticleListComponent.prototype.ngOnInit = function () {
         var _this = this;
         // load articles and tags
-        this.articleService.getMostRelavantArticles(5).then(function (articles) { return _this.articles = articles; });
-        this.tagService.getMostRelavantTags(8).then(function (tags) { return _this.tags = tags; });
+        this.articleService.getMostRelavantArticles(this.articlesPerView).then(function (enumer) { return _this.processArticleEnumerable(enumer); });
+        this.tagService.getMostRelavantTags(this.tagsPerView).then(function (enumer) { return _this.processTagEnumerable(enumer); });
     };
     ArticleListComponent.prototype.filterArticlesByTag = function (tag) {
         var _this = this;
+        this.query = null;
         if (this.selectedTag == tag) {
             this.resetTagSearch();
             return;
         }
         this.selectedTag = tag;
-        this.articleService.getArticlesByTag(tag).then(function (articles) { _this.articles = articles; });
+        this.articleService.getArticlesByTag(tag, this.articlesPerView).then(function (enumer) { return _this.processArticleEnumerable(enumer); });
     };
     ArticleListComponent.prototype.resetTagSearch = function () {
         var _this = this;
         this.selectedTag = null;
-        this.articleService.getMostRelavantArticles(5).then(function (articles) { return _this.articles = articles; });
+        this.articleService.getMostRelavantArticles(this.articlesPerView).then(function (enumer) { return _this.processArticleEnumerable(enumer); });
     };
     ArticleListComponent.prototype.searchByQuery = function (query) {
         var _this = this;
+        this.selectedTag = null;
         if (query == "") {
             this.resetQuery();
             return;
         }
         this.query = query;
-        this.articleService.getArticlesByQuery(query).then(function (articles) { return _this.articles = articles; });
+        this.articleService.getArticlesByQuery(query, this.articlesPerView)
+            .then(function (enumer) { return _this.processArticleEnumerable(enumer); });
     };
     ArticleListComponent.prototype.resetQuery = function () {
         var _this = this;
         this.query = null;
-        this.articleService.getMostRelavantArticles(5).then(function (articles) { return _this.articles = articles; });
+        this.articleService.getMostRelavantArticles(this.articlesPerView).then(function (enumer) { return _this.processArticleEnumerable(enumer); });
     };
     ArticleListComponent.prototype.gotoArticle = function (article) {
         console.log(article);
