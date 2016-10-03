@@ -28,12 +28,25 @@ var UserService = (function () {
             return new user_1.User(user.login, user.email, user.password);
         });
     };
-    UserService.prototype.registerUser = function (user) {
-        return this.http.post(this.registerUrl, JSON.stringify({ login: user.Login, password: user.Password, email: user.Email }))
+    UserService.prototype.registerUser = function (user, imageId) {
+        var formData = new FormData();
+        formData.append('login', user.Login);
+        formData.append('password', user.Password);
+        formData.append('email', user.Email);
+        formData.append('file', this.getImageFile(imageId));
+        return this.http.post(this.registerUrl, formData)
             .toPromise().then(function (res) {
             var user = res.json();
-            return new user_1.User(user.login, user.email, user.password);
+            if (user != null) {
+                return new user_1.User(user.login, user.email, user.password, user.imageSrc);
+            }
+            else {
+                return null;
+            }
         });
+    };
+    UserService.prototype.getImageFile = function (id) {
+        return document.getElementById(id).files[0];
     };
     UserService = __decorate([
         core_1.Injectable(), 

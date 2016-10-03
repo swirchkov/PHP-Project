@@ -40,7 +40,7 @@
             return null;
         }
 
-        public function registerUser($login, $email, $pass) {
+        public function registerUser($login, $email, $pass, $image) {
             include('../config.php');
             $dbLink = mysqli_connect($host, $dbUser, $dbPassword, $database) or die('cannot connect to mysql');
 
@@ -52,8 +52,8 @@
                 return false;
             }
 
-            $query = 'INSERT INTO users ( Login, Password, Email) 
-                                    VALUES ("'.$login.'", "'.$pass.'", "'.$email.'" )';
+            $query = 'INSERT INTO users ( Login, Password, Email, Image) 
+                                    VALUES ("'.$login.'", "'.$pass.'", "'.$email.'", "'.$image.'" )';
             
             $result = mysqli_query($dbLink, $query) or die("Ошибка " . mysqli_error($dbLink));
 

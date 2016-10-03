@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS Users (
     Id int(6) UNSIGNED NOT NULL auto_increment PRIMARY KEY,
     Login varchar(50) NOT NULL default '',
     Email varchar(50) NOT NULL default '',
-    Password varchar(255) NOT NULL default ''
+    Password varchar(255) NOT NULL default '',
+    Image varchar(255) NOT NULL default ''
 )
 
 -- ----------------------------------------------------------------------

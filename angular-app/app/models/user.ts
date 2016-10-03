@@ -3,11 +3,16 @@ export class User {
     private login : string;
     private email: string;
     private password : string;
+    private imageSrc : string; // image src after user is registered and used for src argument
+    private imageId : string;  // id used when user is registrating
 
-    public constructor(login : string = null, email: string = null, password : string = null ) {
+    public constructor(login : string = null, email: string = null, password : string = null, imageSrc: string = null, 
+                        imageId : string = null ) {
         this.email = email;
         this.login = login;
         this.password = password;
+        this.imageId = imageId;
+        this.imageSrc = imageSrc;
     }
 
     public get Id() : number { return this.id; }
@@ -21,5 +26,11 @@ export class User {
 
     public get Password() : string { return this.password; }
     public set Password(value: string) { this.password = value; }
+
+    public get ImageSrc() : string { return this.imageSrc; }
+    public set ImageSrc(value : string) { this.imageSrc = value; }
+
+    public get ImageId() : string { return this.imageId; }
+    public set ImageId(value : string) { this.imageId = value; }
     
 }

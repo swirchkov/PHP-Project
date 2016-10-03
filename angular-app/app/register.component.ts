@@ -25,7 +25,9 @@ export class RegisterComponent {
     public constructor(private service: UserService, private router: Router) {}
 
     public registerUser() {
-        this.service.registerUser(this.user).then((user) => {
+        this.service.registerUser(this.user, 'avatar').then((user) => {
+
+            console.log(user);
 
             if (user == null) {
                 this.isFreeLogin = false;

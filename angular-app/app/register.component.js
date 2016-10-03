@@ -27,7 +27,8 @@ var RegisterComponent = (function () {
     }
     RegisterComponent.prototype.registerUser = function () {
         var _this = this;
-        this.service.registerUser(this.user).then(function (user) {
+        this.service.registerUser(this.user, 'avatar').then(function (user) {
+            console.log(user);
             if (user == null) {
                 _this.isFreeLogin = false;
                 return;

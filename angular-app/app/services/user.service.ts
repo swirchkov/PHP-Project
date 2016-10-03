@@ -24,12 +24,28 @@ export class UserService {
         });
     }
 
-    public registerUser(user : User) : Promise<User> {
-        return this.http.post(this.registerUrl, JSON.stringify({ login: user.Login, password: user.Password, email: user.Email }))
+    public registerUser(user : User, imageId: string) : Promise<User> {
+        var formData = new FormData();
+        formData.append('login', user.Login);
+        formData.append('password', user.Password);
+        formData.append('email', user.Email);
+        formData.append('file', this.getImageFile(imageId));
+
+        return this.http.post(this.registerUrl, formData)
         .toPromise().then((res) => {
             var user = res.json();
-            return new User(user.login, user.email, user.password);
+            
+            if (user != null) {
+                return new User(user.login, user.email, user.password, user.imageSrc);
+            }
+            else {
+                return null;
+            }
         });
+    }
+
+    private getImageFile(id: string) {
+        return (<HTMLInputElement>document.getElementById(id)).files[0];
     }
 
 }

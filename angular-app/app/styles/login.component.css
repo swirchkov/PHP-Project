@@ -25,6 +25,10 @@ input[type='email'] {
     max-width: 320px;
 }
 
+input[type='file'] {
+    max-width: 320px;
+}
+
 label {
     padding-top: 8px;
 }
