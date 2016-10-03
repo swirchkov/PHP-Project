@@ -13,8 +13,8 @@
             $link = mysqli_connect($host, $dbUser, $dbPassword, $database) 
                 or die("Ошибка " . mysqli_error($link));
             
-            $result = mysqli_query($link, "Select Id, Login, Password, Email FROM Users Where Login ='". $login."';");
-
+            $result = mysqli_query($link, "Select Id, Login, Password, Email, Image FROM Users Where Login ='". $login."';");
+            
             if (!$result) {
                 return false;
             }
@@ -29,12 +29,13 @@
             $login = $row[1];
             $pass = $row[2];
             $email = $row[3];
+            $image = $row[4];
 
             mysqli_free_result($result);
             mysqli_close($link);
 
             if ($pass == $password) {
-                return new User($login, $pass, $email, $id);
+                return new User($login, $pass, $email, $id, $image);
             }
 
             return null;

@@ -36,8 +36,8 @@
     include('../config.php');
 
     $login = $_POST['login'];
-    $email = $_POST['password'];
-    $password = $_POST['email'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
     $image = $_FILES['file'];
 
     $relPath = getImageRelativePath($image['name']);

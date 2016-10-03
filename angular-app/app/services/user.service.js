@@ -21,29 +21,29 @@ var UserService = (function () {
         this.loginUrl = "http://localhost/project/account/login.php";
         this.registerUrl = "http://localhost/project/account/register.php";
     }
+    UserService.prototype.transformResponseToUser = function (res) {
+        var user = res.json();
+        if (user != null) {
+            return new user_1.User(user.login, user.email, user.password, user.imageSrc);
+        }
+        else {
+            return null;
+        }
+    };
     UserService.prototype.loginUser = function (user) {
+        var _this = this;
         return this.http.post(this.loginUrl, JSON.stringify({ login: user.Login, password: user.Password })).toPromise()
-            .then(function (res) {
-            var user = res.json();
-            return new user_1.User(user.login, user.email, user.password);
-        });
+            .then(function (res) { return _this.transformResponseToUser(res); });
     };
     UserService.prototype.registerUser = function (user, imageId) {
+        var _this = this;
         var formData = new FormData();
         formData.append('login', user.Login);
         formData.append('password', user.Password);
         formData.append('email', user.Email);
         formData.append('file', this.getImageFile(imageId));
         return this.http.post(this.registerUrl, formData)
-            .toPromise().then(function (res) {
-            var user = res.json();
-            if (user != null) {
-                return new user_1.User(user.login, user.email, user.password, user.imageSrc);
-            }
-            else {
-                return null;
-            }
-        });
+            .toPromise().then(function (res) { return _this.transformResponseToUser(res); });
     };
     UserService.prototype.getImageFile = function (id) {
         return document.getElementById(id).files[0];

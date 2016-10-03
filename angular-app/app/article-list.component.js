@@ -76,6 +76,10 @@ var ArticleListComponent = (function () {
     ArticleListComponent.prototype.gotoArticle = function (article) {
         console.log(article);
     };
+    ArticleListComponent.prototype.logOut = function () {
+        this.user = null;
+        constraints_1.Constraints.AuthenticatedUser = null;
+    };
     ArticleListComponent = __decorate([
         core_1.Component({
             selector: 'article-list',

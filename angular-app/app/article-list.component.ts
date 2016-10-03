@@ -98,4 +98,9 @@ export class ArticleListComponent implements OnInit {
     public gotoArticle(article: Article) {
         console.log(article);
     }
+
+    public logOut() {
+        this.user = null;
+        Constraints.AuthenticatedUser = null;
+    }
 }

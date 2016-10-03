@@ -16,12 +16,20 @@ export class UserService {
 
     public constructor(private http: Http) {}
 
+    private transformResponseToUser(res : any ) : User {
+        var user = res.json();
+
+        if (user != null) {
+            return new User(user.login, user.email, user.password, user.imageSrc);
+        }
+        else {
+            return null;
+        }
+    } 
+
     public loginUser(user : User) : Promise<User> {
         return this.http.post(this.loginUrl, JSON.stringify({ login: user.Login, password: user.Password })).toPromise()
-        .then((res) => {
-            var user = res.json();
-            return new User(user.login, user.email, user.password);
-        });
+        .then((res) => this.transformResponseToUser(res));
     }
 
     public registerUser(user : User, imageId: string) : Promise<User> {
@@ -32,16 +40,7 @@ export class UserService {
         formData.append('file', this.getImageFile(imageId));
 
         return this.http.post(this.registerUrl, formData)
-        .toPromise().then((res) => {
-            var user = res.json();
-            
-            if (user != null) {
-                return new User(user.login, user.email, user.password, user.imageSrc);
-            }
-            else {
-                return null;
-            }
-        });
+        .toPromise().then((res) => this.transformResponseToUser(res));
     }
 
     private getImageFile(id: string) {
