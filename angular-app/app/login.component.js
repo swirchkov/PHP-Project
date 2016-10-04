@@ -27,6 +27,7 @@ var LoginComponent = (function () {
     }
     LoginComponent.prototype.loginUser = function () {
         var _this = this;
+        this.authenticating();
         // save user somewhere and redirect to main page
         this.service.loginUser(this.user).then(function (user) {
             if (user == null) {
@@ -37,6 +38,9 @@ var LoginComponent = (function () {
             _this.user = user;
             _this.router.navigate(['articles']);
         });
+    };
+    LoginComponent.prototype.authenticating = function () {
+        this.error = null;
     };
     LoginComponent.prototype.authenticationFail = function () {
         this.error = new error_1.Error('', 'invalid login or password');

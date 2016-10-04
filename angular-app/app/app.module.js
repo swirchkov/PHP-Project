@@ -18,6 +18,7 @@ var app_component_1 = require("./app.component");
 var article_list_component_1 = require("./article-list.component");
 var login_component_1 = require("./login.component");
 var register_component_1 = require("./register.component");
+var profile_component_1 = require('./profile.component');
 // routing
 var app_routing_1 = require("./app.routing");
 // services
@@ -39,7 +40,8 @@ var AppModule = (function () {
                 app_component_1.AppComponent,
                 article_list_component_1.ArticleListComponent,
                 login_component_1.LoginComponent,
-                register_component_1.RegisterComponent
+                register_component_1.RegisterComponent,
+                profile_component_1.ProfileComponent
             ],
             providers: [
                 user_service_1.UserService,

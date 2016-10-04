@@ -24,6 +24,7 @@ export class LoginComponent {
     public constructor(private service: UserService, private router: Router) {}
     
     public loginUser() {
+        this.authenticating();
         // save user somewhere and redirect to main page
         this.service.loginUser(this.user).then((user) => { 
 
@@ -37,6 +38,10 @@ export class LoginComponent {
 
             this.router.navigate(['articles']);
         });
+    }
+
+    private authenticating() {
+        this.error = null;
     }
 
     private authenticationFail() {

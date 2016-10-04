@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login.component';
 import { RegisterComponent } from "./register.component";
 import { ArticleListComponent } from './article-list.component';
+import { ProfileComponent } from './profile.component';
 
 const appRoutes: Routes = [
     {
@@ -23,6 +24,10 @@ const appRoutes: Routes = [
     {
         path: 'register',
         component: RegisterComponent
+    },
+    {
+        path: 'profile',
+        component: ProfileComponent
     }
 ];
 

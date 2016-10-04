@@ -1,0 +1,38 @@
+.title {
+    margin-top: 25px;
+    font-family : "Comic Sans MS", cursive, sans-serif;
+    text-align: center;
+    font-size: 16px;
+    margin-left: 10%;
+}
+
+.root-link {
+    color: #874444;
+}
+
+.root-link:focus {
+    color: #874444;
+}
+
+.cur-data-container {
+    margin-top: 30px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.float-right {
+    float: right;
+}
+
+.text-container {
+    border-right: 1px solid #ddd;
+    min-height: 150px;
+    padding-top: 30px;
+}
+
+.btn-link {
+    background-color: #ddd;
+    color: #874444;
+    font-size: bigger;
+    margin-top: 50px;
+}

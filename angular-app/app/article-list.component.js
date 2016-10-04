@@ -46,7 +46,7 @@ var ArticleListComponent = (function () {
         var _this = this;
         this.query = null;
         if (this.selectedTag == tag) {
-            this.resetTagSearch();
+            this.resetFilter();
             return;
         }
         this.selectedTag = tag;
@@ -61,16 +61,17 @@ var ArticleListComponent = (function () {
         var _this = this;
         this.selectedTag = null;
         if (query == "") {
-            this.resetQuery();
+            this.resetFilter();
             return;
         }
         this.query = query;
         this.articleService.getArticlesByQuery(query, this.articlesPerView)
             .then(function (enumer) { return _this.processArticleEnumerable(enumer); });
     };
-    ArticleListComponent.prototype.resetQuery = function () {
+    ArticleListComponent.prototype.resetFilter = function () {
         var _this = this;
         this.query = null;
+        this.selectedTag = null;
         this.articleService.getMostRelavantArticles(this.articlesPerView).then(function (enumer) { return _this.processArticleEnumerable(enumer); });
     };
     ArticleListComponent.prototype.gotoArticle = function (article) {

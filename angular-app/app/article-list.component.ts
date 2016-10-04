@@ -62,7 +62,7 @@ export class ArticleListComponent implements OnInit {
         this.query = null;
 
         if (this.selectedTag == tag) {
-            this.resetTagSearch();
+            this.resetFilter();
             return;
         }
 
@@ -80,7 +80,7 @@ export class ArticleListComponent implements OnInit {
         this.selectedTag = null;
 
         if (query == "") {
-            this.resetQuery();
+            this.resetFilter();
             return;
         }
 
@@ -90,8 +90,9 @@ export class ArticleListComponent implements OnInit {
                     .then((enumer) => this.processArticleEnumerable(enumer));
     }
 
-    public resetQuery() {
+    public resetFilter() {
         this.query = null;
+        this.selectedTag = null;
         this.articleService.getMostRelavantArticles(this.articlesPerView).then((enumer) => this.processArticleEnumerable(enumer));
     } 
 

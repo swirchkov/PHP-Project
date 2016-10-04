@@ -3,6 +3,7 @@ var router_1 = require("@angular/router");
 var login_component_1 = require('./login.component');
 var register_component_1 = require("./register.component");
 var article_list_component_1 = require('./article-list.component');
+var profile_component_1 = require('./profile.component');
 var appRoutes = [
     {
         path: '',
@@ -20,6 +21,10 @@ var appRoutes = [
     {
         path: 'register',
         component: register_component_1.RegisterComponent
+    },
+    {
+        path: 'profile',
+        component: profile_component_1.ProfileComponent
     }
 ];
 exports.routing = router_1.RouterModule.forRoot(appRoutes);

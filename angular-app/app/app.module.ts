@@ -9,6 +9,7 @@ import { AppComponent } from "./app.component";
 import { ArticleListComponent } from "./article-list.component";
 import { LoginComponent } from "./login.component";
 import { RegisterComponent } from "./register.component";
+import { ProfileComponent } from './profile.component';
 
 // routing
 import { routing } from "./app.routing";
@@ -30,7 +31,8 @@ import { TagService } from "./services/tag.service";
         AppComponent,
         ArticleListComponent,
         LoginComponent,
-        RegisterComponent
+        RegisterComponent,
+        ProfileComponent
     ],
     providers : [
         UserService,
