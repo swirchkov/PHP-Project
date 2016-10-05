@@ -15,11 +15,13 @@ var http_1 = require("@angular/http");
 require('rxjs/add/operator/toPromise');
 //models
 var user_1 = require("./../models/user");
+// constants
+var constants_1 = require('./../constants');
 var UserService = (function () {
     function UserService(http) {
         this.http = http;
-        this.loginUrl = "http://localhost/project/account/login.php";
-        this.registerUrl = "http://localhost/project/account/register.php";
+        this.loginUrl = constants_1.Constants.BaseUrl + "/account/login.php";
+        this.registerUrl = constants_1.Constants.BaseUrl + "/account/register.php";
     }
     UserService.prototype.transformResponseToUser = function (res) {
         var user = res.json();

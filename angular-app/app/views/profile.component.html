@@ -11,7 +11,7 @@
 <main class='cur-data-container row'>
 
     <div class="col-lg-3">
-        <img src='../../images/ava.png' class="img-circle float-right" width="220" height="150" />
+        <img [src]='baseUrl + user.ImageSrc' class="img-circle float-right" width="220" height="150" />
     </div>
 
     <div class="col-lg-3 text-center text-container" >
@@ -19,30 +19,30 @@
             Your's profile data
         </h4>
         <div class="row text-center">
-            Login <i> some login </i>
+            Login <i> {{ user.Login }} </i>
         </div>
 
         <div class="row text-center">
-            Email - <i> mail@mad.com </i>
+            Email - <i> {{ user.Email }} </i>
         </div>
 
     </div>
 
     <div class="col-lg-6" >
-        <button type="button" class="btn btn-link margin-left-10">
+        <button type="button" class="btn btn-link margin-left-10" (click)='mode = PROFILE;' >
             Edit personal information
         </button>
-        <button type='button' class="btn btn-link">
+        <button type='button' class="btn btn-link" (click) = 'mode = ARTICLES;'>
             Edit articles
         </button>
-        <button type='button' class="btn btn-link">
+        <button type='button' class="btn btn-link" (click) = 'mode = EDIT_ARTICLES'>
             New article
         </button>
     </div>
 
 </main>
 
-<main class="article-container">
+<main class="article-container" [hidden] = 'mode != ARTICLES'>
 
     <div class="row text-center article-header">
         Working with articles on site
@@ -106,6 +106,14 @@
         </div>
     </div>
 
+</main>
+
+<main class='text-center' [hidden] = 'mode != EDIT_ARTICLES'>
+    currently working on this functionality ( publishing articles )
+</main>
+
+<main class='text-center' [hidden] = 'mode != PROFILE'>
+    currently working on this functionality ( editing profile )
 </main>
 
 <!-- <main>

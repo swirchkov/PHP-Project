@@ -15,8 +15,8 @@ var router_1 = require("@angular/router");
 var user_1 = require("./models/user");
 //service
 var user_service_1 = require("./services/user.service");
-// constraints
-var constraints_1 = require('./constraints');
+// session
+var session_1 = require('./session');
 var RegisterComponent = (function () {
     function RegisterComponent(service, router) {
         this.service = service;
@@ -33,7 +33,7 @@ var RegisterComponent = (function () {
                 _this.isFreeLogin = false;
                 return;
             }
-            constraints_1.Constraints.AuthenticatedUser = user;
+            session_1.Session.AuthenticatedUser = user;
             _this.user = user;
             _this.router.navigate(['articles']);
         });

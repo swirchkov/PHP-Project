@@ -20,6 +20,7 @@
         echo json_encode(null);
     } 
     else {
-        echo json_encode(array('login' => $res->getLogin(), 'password' => $res->getPassword(), 'email' => $res->getEmail()));
+        echo json_encode(array('login' => $res->getLogin(), 'password' => $res->getPassword(), 'email' => $res->getEmail(), 
+                                'imageSrc' => $res->getImageSrc()));
     }
 ?>

@@ -8,11 +8,14 @@ import 'rxjs/add/operator/toPromise';
 //models
 import { User } from "./../models/user";
 
+// constants
+import { Constants } from './../constants';
+
 @Injectable()
 export class UserService {
     
-    private loginUrl = "http://localhost/project/account/login.php";
-    private registerUrl = "http://localhost/project/account/register.php";
+    private loginUrl = Constants.BaseUrl + "/account/login.php";
+    private registerUrl = Constants.BaseUrl + "/account/register.php";
 
     public constructor(private http: Http) {}
 

@@ -16,8 +16,8 @@ var user_1 = require("./models/user");
 var error_1 = require("./models/error");
 //service
 var user_service_1 = require("./services/user.service");
-// constraints
-var constraints_1 = require('./constraints');
+// session
+var session_1 = require('./session');
 var LoginComponent = (function () {
     function LoginComponent(service, router) {
         this.service = service;
@@ -34,7 +34,7 @@ var LoginComponent = (function () {
                 _this.authenticationFail();
                 return;
             }
-            constraints_1.Constraints.AuthenticatedUser = user;
+            session_1.Session.AuthenticatedUser = user;
             _this.user = user;
             _this.router.navigate(['articles']);
         });

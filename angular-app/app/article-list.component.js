@@ -12,8 +12,8 @@ var core_1 = require("@angular/core");
 // services
 var article_service_1 = require("./services/article.service");
 var tag_service_1 = require("./services/tag.service");
-// constraints
-var constraints_1 = require("./constraints");
+// session
+var session_1 = require("./session");
 var ArticleListComponent = (function () {
     function ArticleListComponent(articleService, tagService) {
         this.articleService = articleService;
@@ -25,7 +25,7 @@ var ArticleListComponent = (function () {
         this.articleEnumerable = null;
         this.articlesPerView = 2;
         this.tagsPerView = 8;
-        this.user = constraints_1.Constraints.AuthenticatedUser;
+        this.user = session_1.Session.AuthenticatedUser;
     }
     ArticleListComponent.prototype.processArticleEnumerable = function (enumerable) {
         this.articleEnumerable = enumerable;
@@ -79,7 +79,7 @@ var ArticleListComponent = (function () {
     };
     ArticleListComponent.prototype.logOut = function () {
         this.user = null;
-        constraints_1.Constraints.AuthenticatedUser = null;
+        session_1.Session.AuthenticatedUser = null;
     };
     ArticleListComponent = __decorate([
         core_1.Component({
