@@ -9,8 +9,8 @@ import { Error } from "./models/error";
 //service
 import { UserService } from "./services/user.service";
 
-// constraints
-import { Constraints } from './constraints';
+// session
+import { Session } from './session';
 
 @Component({
     selector: 'login-component',
@@ -33,7 +33,7 @@ export class LoginComponent {
                 return;
             }
 
-            Constraints.AuthenticatedUser = user;
+            Session.AuthenticatedUser = user;
             this.user = user; 
 
             this.router.navigate(['articles']);

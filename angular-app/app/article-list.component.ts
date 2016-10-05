@@ -9,8 +9,8 @@ import { Tag } from "./models/tag";
 import { ArticleService } from "./services/article.service";
 import { TagService } from "./services/tag.service";
 
-// constraints
-import { Constraints } from "./constraints";
+// session
+import { Session } from "./session";
 
 // library
 import { Enumerable } from './library/enumerable';
@@ -37,7 +37,7 @@ export class ArticleListComponent implements OnInit {
     private tagsPerView = 8;
 
     constructor(private articleService : ArticleService, private tagService: TagService) {
-        this.user = Constraints.AuthenticatedUser;
+        this.user = Session.AuthenticatedUser;
     }
 
     private processArticleEnumerable(enumerable : Enumerable<Article> ) {
@@ -102,6 +102,6 @@ export class ArticleListComponent implements OnInit {
 
     public logOut() {
         this.user = null;
-        Constraints.AuthenticatedUser = null;
+        Session.AuthenticatedUser = null;
     }
 }

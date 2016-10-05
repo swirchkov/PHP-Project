@@ -1,7 +1,7 @@
 // models
 import { User } from "./models/user";
 
-export class Constraints {
+export class Session {
     private static authenticatedUser : User = null;
 
     public static get AuthenticatedUser() { return this.authenticatedUser; }

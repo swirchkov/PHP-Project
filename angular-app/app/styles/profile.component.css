@@ -36,3 +36,90 @@
     font-size: bigger;
     margin-top: 50px;
 }
+
+    .btn-link + .btn-link {
+        margin-left: 10px;
+    }
+
+.article-container {
+    margin-top: 20px;
+}
+
+.article-header {
+    font-size: bigger;
+    font-style: italic;
+    font-weight: bolder;
+}
+
+.article-header-row {
+    border: 3px solid #ddd;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+    border-bottom: 1px solid #ddd;
+
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.color-red {
+    color: #874444;
+}
+
+.font-bolder {
+    font-weight: bolder;
+}
+
+.article-title {
+    font-weight : bolder;
+    letter-spacing: 2px;
+}
+
+.article-container-row {
+    padding-top: 10px;
+
+    padding-bottom: 10px;
+    border-left : 3px solid #ddd;
+    border-right: 3px solid #ddd;
+    border-bottom: 5px solid #ddd;
+}
+
+.article-content {
+    padding-top: 10px;
+}
+
+.switch-btn {
+    transform: rotate(270deg);
+	transform-origin: left top 0;
+        position : fixed;
+    right: 0;
+}
+
+.float-left {
+    float: left;
+}
+
+.margin-left-10 {
+    margin-left: 10%;
+}
+
+.edit-btn {
+    color: #874444;
+    font-weight: bolder;
+    border: 3px solid #ddd;
+    border-top: none;
+
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.edit-btn a:hover {
+    text-decoration: none;
+    font-style: italic;
+}
+
+.container + .container {
+    margin-top: 30px;
+}
