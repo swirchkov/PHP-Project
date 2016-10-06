@@ -108,23 +108,46 @@
 
 </main>
 
-<main class='text-center' [hidden] = 'mode != EDIT_ARTICLES'>
-    currently working on this functionality ( publishing articles )
+<main class='edit-container' [hidden] = 'mode != EDIT_ARTICLES'>
+    <form>
+        <div class="row text-center form-header">
+            Write new article
+        </div>
+        <div class="row border-underline">
+            <label class="col-lg-4 text-right">
+                Title 
+            </label>
+            <input type='text' class="form-control col-lg-3" />
+        </div>
+        <div class="row border-underline">
+            <label class="col-lg-4 text-right">
+                Tags (separate by space)
+            </label>
+            <input type='text' class="form-control col-lg-3" />
+        </div>
+        <div class="row border-underline">
+            <label class="col-lg-4 text-right">
+                Article image
+            </label>
+            <input type='file' class="form-control col-lg-3" />
+        </div>
+        <div class="row border-underline">
+            <label class="col-lg-4 text-right">
+                Article text
+            </label>
+            <textarea rows='10' class="form-control">
+            </textarea>
+        </div>
+        <div class="row text-center">
+            <input type='submit' class="btn btn-success" value='Publish' />
+        </div>
+    </form>
 </main>
 
 <main class='text-center' [hidden] = 'mode != PROFILE'>
     currently working on this functionality ( editing profile )
 </main>
 
-<!-- <main>
-    <form>
-        <div class="row">
-            <label class="col-lg-3">
-                Article title
-            </label>
-            <div class="col-lg-9">
-                <input type='text' class="form-control" />
-            </div>
-        </div>
-    </form>
-</main> -->
+<footer>
+    2016 by Swirchkov Wladymir & Grynko Alina & Kovalenko Ekaterina 
+</footer>
