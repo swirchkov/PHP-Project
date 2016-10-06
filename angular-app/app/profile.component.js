@@ -13,13 +13,18 @@ var core_1 = require('@angular/core');
 var session_1 = require('./session');
 // constants
 var constants_1 = require('./constants');
+//service
+var tag_service_1 = require('./services/tag.service');
 var ProfileComponent = (function () {
-    function ProfileComponent() {
+    function ProfileComponent(tagService) {
+        this.tagService = tagService;
         this.baseUrl = constants_1.Constants.BaseUrl;
+        this.tags = null;
+        this.tagEnumerable = null;
+        this.tagsPerView = 8;
         // default display all articles
         this.mode = this.ARTICLES;
         this.user = session_1.Session.AuthenticatedUser;
-        console.log(this.user);
     }
     Object.defineProperty(ProfileComponent.prototype, "ARTICLES", {
         // modes
@@ -37,9 +42,13 @@ var ProfileComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    ProfileComponent.prototype.processTagEnumerable = function (enumerable) {
+        this.tagEnumerable = enumerable;
+        this.tags = this.tagEnumerable.Next();
+    };
     ProfileComponent.prototype.ngOnInit = function () {
-        this.user = session_1.Session.AuthenticatedUser;
-        console.log(this.user);
+        var _this = this;
+        this.tagService.getMostRelavantTags(this.tagsPerView).then(function (enumer) { return _this.processTagEnumerable(enumer); });
     };
     ProfileComponent = __decorate([
         core_1.Component({
@@ -47,7 +56,7 @@ var ProfileComponent = (function () {
             templateUrl: 'app/views/profile.component.html',
             styleUrls: ['app/styles/profile.component.css', 'app/styles/header.css']
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [tag_service_1.TagService])
     ], ProfileComponent);
     return ProfileComponent;
 }());

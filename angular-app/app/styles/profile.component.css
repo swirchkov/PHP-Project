@@ -3,7 +3,6 @@
     font-family : "Comic Sans MS", cursive, sans-serif;
     text-align: center;
     font-size: 16px;
-    margin-left: 10%;
 }
 
 .root-link {
@@ -31,15 +30,19 @@
 }
 
 .btn-link {
-    background-color: #ddd;
+    border: 1px solid #ddd;
     color: #874444;
     font-size: bigger;
-    margin-top: 50px;
+    margin-top: 10px;
+    display: block;
+    margin-left: 10%;
+    margin-right: 10%;
+    min-width: 80%;
 }
 
-    .btn-link + .btn-link {
-        margin-left: 10px;
-    }
+.btn-link.active {
+    background-color: #ddd;
+}
 
 .article-container {
     margin-top: 20px;
@@ -78,14 +81,15 @@
 .article-container-row {
     padding-top: 10px;
 
-    padding-bottom: 10px;
+    padding-bottom: 40px;
     border-left : 3px solid #ddd;
     border-right: 3px solid #ddd;
     border-bottom: 5px solid #ddd;
+    min-height: 300px;
 }
 
 .article-content {
-    padding-top: 10px;
+    padding-top: 40px;
 }
 
 .switch-btn {
@@ -134,11 +138,9 @@ label {
 }
 
 .border-underline {
-    margin-left: 20%;
-    margin-right: 20%;
-    border: 1px solid #ddd;
-    border-top: none;
-    border-radius: 40px;
+    border-bottom: 1px solid #ddd;
+    margin-left: 5px;
+    border-radius: 0px;
     padding-bottom: 10px;
     margin-bottom: 10px;
 }
@@ -167,4 +169,71 @@ footer {
     border-top: 1px solid #ddd;
     min-width: 100%;
     padding: 10px;
+}
+
+.container {
+    margin-left: 3%;
+    margin-right: 3%;
+    min-width: 94%;
+}
+
+.padding-top-20 {
+    padding-top: 20px;
+}
+
+.tag-link {
+    background: linear-gradient(90deg, white, #ddd, white);
+    color: #874444;
+    padding: 5px;
+    text-align: center;
+    display: block;
+    font-style: italic;
+    font-size: 14px;
+    
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 20px;
+
+    margin-bottom: 5px;
+    cursor: pointer;
+
+    max-width: 80%;
+    margin-left: 10%;
+}
+
+    .tag-link.active {
+        background: white !important; 
+    }
+
+.pagination-container {
+    text-align: center;
+    margin-top : 15px;
+    background-color: #ddd;
+    border-radius: 5px; 
+    padding: 10px;
+    margin-left: 40%;
+    max-width: 100px;
+}
+
+.pagination-left {
+    color: #874444;
+    margin-left: 3px;
+    cursor: pointer;
+}
+    .pagination-left:hover {
+        text-decoration: none;
+    }
+
+.pagination-home {
+    color: #874444;
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+    .pagination-home:hover {
+        text-decoration: none;
+    }
+
+.pagination-right {
+    color: #874444;
+    cursor: pointer;
 }

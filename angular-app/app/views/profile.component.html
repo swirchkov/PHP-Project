@@ -6,15 +6,27 @@
     <div class='col-md-6 col-lg-6 title'>
         <i> Welcome to your profile </i>
     </div>
+
+    <div class='col-md-3 col-lg-2 text-center link-container'>
+        <a class='dropdown-toggle cursor-pointer' type='button' data-toggle='dropdown'> 
+            Hello, {{ user.Login }} 
+            <span class='caret'></span>
+        </a>
+
+        <ul class="dropdown-menu">
+            <li> <a class='cursor-pointer' routerLink='/profile'> Profile </a> </li>
+            <li> <a class="cursor-pointer" (click) = 'logOut()'> Exit </a> </li>
+        </ul>
+    </div>
 </header>
 
 <main class='cur-data-container row'>
 
-    <div class="col-lg-3">
+    <div class="col-lg-4">
         <img [src]='baseUrl + user.ImageSrc' class="img-circle float-right" width="220" height="150" />
     </div>
 
-    <div class="col-lg-3 text-center text-container" >
+    <div class="col-lg-4 text-center text-container" >
         <h4> 
             Your's profile data
         </h4>
@@ -28,14 +40,17 @@
 
     </div>
 
-    <div class="col-lg-6" >
-        <button type="button" class="btn btn-link margin-left-10" (click)='mode = PROFILE;' >
+    <div class="col-lg-4" >
+        <button type="button" (click)='mode = PROFILE;' 
+            [class]='mode== PROFILE ? "btn btn-link active" : "btn btn-link"'>
             Edit personal information
         </button>
-        <button type='button' class="btn btn-link" (click) = 'mode = ARTICLES;'>
+        <button type='button' [class]='mode== ARTICLES ? "btn btn-link active" : "btn btn-link"' 
+        (click) = 'mode = ARTICLES;'>
             Edit articles
         </button>
-        <button type='button' class="btn btn-link" (click) = 'mode = EDIT_ARTICLES'>
+        <button type='button' [class]='mode== EDIT_ARTICLES ? "btn btn-link active" : "btn btn-link"' 
+        (click) = 'mode = EDIT_ARTICLES'>
             New article
         </button>
     </div>
@@ -58,14 +73,17 @@
             </div>
         </div>
         <div class="row article-container-row">
-            <div class="col-lg-3">
-                <img src='../../images/ava.png' class="img-circle float-right" width='220' height='150' />
+            <div class="col-lg-3 padding-top-20">
+                <img src='../../images/ava.png' class="img-rounded float-right" width='250' height='200' />
             </div>
             <div class="col-lg-9 article-content">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Nullam non aliquam risus, vitae finibus lectus. Sed consectetur justo diam, suscipit rhoncus dolor eleifend quis. 
-                consectetur pulvinar metus in imperdiet. Maecenas vel nunc nec tortor ultrices ultrices. Aenean tempor venenatis mi, 
-                in luctus lorem bibendum vel. Nam diam nunc, commodo quis lobortis sed, sagittis id tellus.
+    Nullam non aliquam risus, vitae finibus lectus. Sed consectetur justo diam, suscipit rhoncus dolor eleifend quis. 
+    consectetur pulvinar metus in imperdiet. Maecenas vel nunc nec tortor ultrices ultrices. Aenean tempor venenatis mi, 
+    in luctus lorem bibendum vel. Nam diam nunc, commodo quis lobortis sed, sagittis id tellus. Quisque quis tortor pharetra 
+    sapien auctor molestie id non arcu. Aenean a egestas arcu. Quisque gravida ante tincidunt consectetur molestie.
+    Nullam ut diam lectus. Ut eu euismod massa. Maecenas aliquam venenatis turpis nec fermentum. Nullam viverra interdum sem 
+    quis hendrerit. Mauris velit mi, mattis vel massa non, faucibus eleifend eros. Pellentesque molestie in ligula ut venenatis.
             </div>
         </div>
         <div class="row text-center">
@@ -88,13 +106,16 @@
         </div>
         <div class="row article-container-row">
             <div class="col-lg-3">
-                <img src='../../images/ava.png' class="img-circle float-right" width='220' height='150' />
+                <img src='../../images/ava.png' class="img-rounded float-right" width='250' height='200' />
             </div>
             <div class="col-lg-9 article-content">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Nullam non aliquam risus, vitae finibus lectus. Sed consectetur justo diam, suscipit rhoncus dolor eleifend quis. 
-                consectetur pulvinar metus in imperdiet. Maecenas vel nunc nec tortor ultrices ultrices. Aenean tempor venenatis mi, 
-                in luctus lorem bibendum vel. Nam diam nunc, commodo quis lobortis sed, sagittis id tellus.
+    Nullam non aliquam risus, vitae finibus lectus. Sed consectetur justo diam, suscipit rhoncus dolor eleifend quis. 
+    consectetur pulvinar metus in imperdiet. Maecenas vel nunc nec tortor ultrices ultrices. Aenean tempor venenatis mi, 
+    in luctus lorem bibendum vel. Nam diam nunc, commodo quis lobortis sed, sagittis id tellus. Quisque quis tortor pharetra 
+    sapien auctor molestie id non arcu. Aenean a egestas arcu. Quisque gravida ante tincidunt consectetur molestie.
+    Nullam ut diam lectus. Ut eu euismod massa. Maecenas aliquam venenatis turpis nec fermentum. Nullam viverra interdum sem 
+    quis hendrerit. Mauris velit mi, mattis vel massa non, faucibus eleifend eros. Pellentesque molestie in ligula ut venenatis.
             </div>
         </div>
         <div class="row text-center">
@@ -113,32 +134,62 @@
         <div class="row text-center form-header">
             Write new article
         </div>
+        <div class="col-lg-8">
         <div class="row border-underline">
-            <label class="col-lg-4 text-right">
+            <label class="col-lg-2 text-right">
                 Title 
             </label>
-            <input type='text' class="form-control col-lg-3" />
+            <input type='text' class="form-control col-lg-10" />
         </div>
-        <div class="row border-underline">
+        <!--<div class="row border-underline">
             <label class="col-lg-4 text-right">
                 Tags (separate by space)
             </label>
             <input type='text' class="form-control col-lg-3" />
-        </div>
+        </div> -->
         <div class="row border-underline">
-            <label class="col-lg-4 text-right">
+            <label class="col-lg-2 text-right">
                 Article image
             </label>
-            <input type='file' class="form-control col-lg-3" />
+            <input type='file' class="form-control col-lg-10" />
         </div>
         <div class="row border-underline">
-            <label class="col-lg-4 text-right">
+            <label class="col-lg-2 text-right">
                 Article text
             </label>
             <textarea rows='10' class="form-control">
             </textarea>
         </div>
-        <div class="row text-center">
+        </div>
+
+        <div class="col-lg-4">
+            <h4 class='text-center'> Tags </h4>
+
+            <div class='tag-container'>
+                <a *ngFor='let tag of tags' (click)='filterArticlesByTag(tag.Tag)'
+                    [class] = 'selectedTag == tag.Tag ? "tag-link active" : "tag-link" '>
+                    {{ tag.Tag }}
+                </a>
+            </div>
+
+            <div class='pagination-container' 
+                [hidden] = 'tagEnumerable != null && !tagEnumerable.canMoveBack() && ! tagEnumerable.canMoveNext() '>
+                <a class='pagination-left' [hidden]='tagEnumerable != null && !tagEnumerable.canMoveBack()'
+                    (click)='this.tags = tagEnumerable.Previous();' >
+                    <span class='glyphicon glyphicon-chevron-left'> </span> 
+                </a>
+                <a class='pagination-home'
+                    (click)='this.tags = tagEnumerable.Reset()'>
+                    <span class='glyphicon glyphicon-home'> </span> 
+                </a>
+                <a class='pagination-right' [hidden]='tagEnumerable != null && !tagEnumerable.canMoveNext()'
+                    (click)='this.tags = tagEnumerable.Next();'>
+                    <span class='glyphicon glyphicon-chevron-right'> </span> 
+                </a>
+            </div> 
+
+        </div>
+        <div class="col-lg-12 row text-center">
             <input type='submit' class="btn btn-success" value='Publish' />
         </div>
     </form>
@@ -148,6 +199,6 @@
     currently working on this functionality ( editing profile )
 </main>
 
-<footer>
+<footer class="col-lg-12">
     2016 by Swirchkov Wladymir & Grynko Alina & Kovalenko Ekaterina 
 </footer>
