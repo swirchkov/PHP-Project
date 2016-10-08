@@ -30,7 +30,6 @@ var ArticleListComponent = (function () {
     ArticleListComponent.prototype.processArticleEnumerable = function (enumerable) {
         this.articleEnumerable = enumerable;
         this.articles = this.articleEnumerable.Next();
-        console.log(enumerable);
     };
     ArticleListComponent.prototype.processTagEnumerable = function (enumerable) {
         this.tagEnumerable = enumerable;

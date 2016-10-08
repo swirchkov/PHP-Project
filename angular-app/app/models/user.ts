@@ -7,12 +7,13 @@ export class User {
     private imageId : string;  // id used when user is registrating
 
     public constructor(login : string = null, email: string = null, password : string = null, imageSrc: string = null, 
-                        imageId : string = null ) {
+                        imageId : string = null, id = 0 ) {
         this.email = email;
         this.login = login;
         this.password = password;
         this.imageId = imageId;
         this.imageSrc = imageSrc;
+        this.id = id;
     }
 
     public get Id() : number { return this.id; }

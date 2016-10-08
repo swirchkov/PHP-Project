@@ -23,7 +23,7 @@ export class UserService {
         var user = res.json();
 
         if (user != null) {
-            return new User(user.login, user.email, user.password, user.imageSrc);
+            return new User(user.login, user.email, user.password, user.imageSrc,"", +user.id );
         }
         else {
             return null;

@@ -16,11 +16,11 @@
 
     $res = $repo->loginUser($login, $password);
 
-    if (!$res) {
+    if ($res == false) {
         echo json_encode(null);
     } 
     else {
         echo json_encode(array('login' => $res->getLogin(), 'password' => $res->getPassword(), 'email' => $res->getEmail(), 
-                                'imageSrc' => $res->getImageSrc()));
+                                'imageSrc' => $res->getImageSrc(), 'id' => $res->getId()));
     }
 ?>

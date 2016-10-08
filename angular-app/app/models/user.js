@@ -1,16 +1,18 @@
 "use strict";
 var User = (function () {
-    function User(login, email, password, imageSrc, imageId) {
+    function User(login, email, password, imageSrc, imageId, id) {
         if (login === void 0) { login = null; }
         if (email === void 0) { email = null; }
         if (password === void 0) { password = null; }
         if (imageSrc === void 0) { imageSrc = null; }
         if (imageId === void 0) { imageId = null; }
+        if (id === void 0) { id = 0; }
         this.email = email;
         this.login = login;
         this.password = password;
         this.imageId = imageId;
         this.imageSrc = imageSrc;
+        this.id = id;
     }
     Object.defineProperty(User.prototype, "Id", {
         get: function () { return this.id; },

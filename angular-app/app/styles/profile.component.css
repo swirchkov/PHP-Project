@@ -237,3 +237,21 @@ footer {
     color: #874444;
     cursor: pointer;
 }
+
+.error {
+    color: red;
+    font-style: italic;
+
+    margin-left: 15px;
+    margin-top: 5px;
+
+    display: inline-block;
+}
+
+.display-none {
+    display: none;
+}
+
+.margin-left-40 {
+    margin-left: 40%;
+}

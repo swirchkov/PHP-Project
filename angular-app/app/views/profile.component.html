@@ -130,44 +130,48 @@
 </main>
 
 <main class='edit-container' [hidden] = 'mode != EDIT_ARTICLES'>
-    <form>
+    <form (ngSubmit)='onArticleSubmit()' #articleForm='ngForm'>
         <div class="row text-center form-header">
             Write new article
         </div>
         <div class="col-lg-8">
-        <div class="row border-underline">
-            <label class="col-lg-2 text-right">
-                Title 
-            </label>
-            <input type='text' class="form-control col-lg-10" />
-        </div>
-        <!--<div class="row border-underline">
-            <label class="col-lg-4 text-right">
-                Tags (separate by space)
-            </label>
-            <input type='text' class="form-control col-lg-3" />
-        </div> -->
-        <div class="row border-underline">
-            <label class="col-lg-2 text-right">
-                Article image
-            </label>
-            <input type='file' class="form-control col-lg-10" />
-        </div>
-        <div class="row border-underline">
-            <label class="col-lg-2 text-right">
-                Article text
-            </label>
-            <textarea rows='10' class="form-control">
-            </textarea>
-        </div>
+            <div class="row border-underline">
+                <label class="col-lg-2 text-right">
+                    Title 
+                </label>
+
+                <input type='text' class="form-control col-lg-10" required [(ngModel)] = 'article.Title' name='title' 
+                    #title='ngModel' />
+            
+                <div [class]='!title.touched || title.valid ? "display-none" : "error"' > Title required </div>
+            </div>
+            <div class="row border-underline">
+                <label class="col-lg-2 text-right">
+                    Article image
+                </label>
+            
+                <input type='file' class="form-control col-lg-10" (change)='onImageChanged($event)' />
+
+                <div [class]=' image != undefined  ? "display-none" : "error"' > Image required </div>
+            </div>
+            <div class="row border-underline">
+                <label class="col-lg-2 text-right">
+                    Article text
+                </label>
+                <textarea rows='10' class="form-control" required name='text' [(ngModel)] ='article.Text' #text='ngModel'>
+                </textarea>
+                <div [class]='!text.touched || text.valid  ? "display-none" : "error margin-left-40 "' > 
+                    Article required 
+                </div>
+            </div>
         </div>
 
         <div class="col-lg-4">
             <h4 class='text-center'> Tags </h4>
 
             <div class='tag-container'>
-                <a *ngFor='let tag of tags' (click)='filterArticlesByTag(tag.Tag)'
-                    [class] = 'selectedTag == tag.Tag ? "tag-link active" : "tag-link" '>
+                <a *ngFor='let tag of tags' (click)='addTag(tag)'
+                    [class] = 'selectedTags.indexOf(tag) != -1 ? "tag-link active" : "tag-link" '>
                     {{ tag.Tag }}
                 </a>
             </div>
@@ -190,7 +194,8 @@
 
         </div>
         <div class="col-lg-12 row text-center">
-            <input type='submit' class="btn btn-success" value='Publish' />
+            <input type='submit' class="btn btn-success" value='Publish' 
+                [disabled] ='!articleForm.form.valid || image == undefined'/>
         </div>
     </form>
 </main>

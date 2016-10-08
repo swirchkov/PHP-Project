@@ -55,7 +55,9 @@
         $result = $repo->registerUser($login, $email, $password, $path );
     
         if ($result) {
-            echo json_encode(array("login" => $login, "email" => $email, "password" => $password, "imageSrc" => $path));
+            echo json_encode(array("login" => $result->getLogin(), "email" => $result->getEmail(), 
+                "password" => $result->getPassword(), "imageSrc" => $result->getImageSrc(), 
+                "id" => $result->getId()));
         }
         else { 
             // delete from server already loaded file because user registration failed

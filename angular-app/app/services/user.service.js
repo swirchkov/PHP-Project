@@ -26,7 +26,7 @@ var UserService = (function () {
     UserService.prototype.transformResponseToUser = function (res) {
         var user = res.json();
         if (user != null) {
-            return new user_1.User(user.login, user.email, user.password, user.imageSrc);
+            return new user_1.User(user.login, user.email, user.password, user.imageSrc, "", +user.id);
         }
         else {
             return null;

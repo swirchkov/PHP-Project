@@ -10,14 +10,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 // angular
 var core_1 = require("@angular/core");
+var http_1 = require("@angular/http");
+// models
+var article_1 = require("./../models/article");
+//session
+var session_1 = require("./../session");
 // mock 
 var mock_articles_1 = require('./mock.articles');
 // library
 var enumerable_1 = require('./../library/enumerable');
+// constants
+var constants_1 = require("./../constants");
 var ArticleService = (function () {
-    function ArticleService() {
-        this.articleRootUrl = 'http://localhost/project/articles/';
+    function ArticleService(http) {
+        this.http = http;
+        this.articleRootUrl = constants_1.Constants.BaseUrl + 'articles/';
         this.articles = mock_articles_1.ARTICLES;
+        this.user = null;
+        this.user = session_1.Session.AuthenticatedUser;
     }
     ArticleService.prototype.getMostRelavantArticles = function (count) {
         return Promise.resolve(new enumerable_1.Enumerable(this.articles, count));
@@ -33,9 +43,24 @@ var ArticleService = (function () {
             return value.Title.toUpperCase().indexOf(query) != -1;
         }), count));
     };
+    ArticleService.prototype.pusblishArticle = function (article, image) {
+        var _this = this;
+        var formData = new FormData();
+        formData.append('title', article.Title);
+        formData.append('text', article.Text);
+        formData.append('tags', article.Tags.join(' '));
+        formData.append('imageFile', image);
+        formData.append('authorId', article.AuthorId);
+        return this.http.post(this.articleRootUrl + 'create.php', formData).toPromise()
+            .then(function (res) { return _this.transformToArticle(res, article); });
+    };
+    ArticleService.prototype.transformToArticle = function (res, req) {
+        res = JSON.parse(res._body);
+        return new article_1.Article(res.Title, req.AuthorName, req.AuthorId, res.Text, res.Tags.split(' '), res.ImageUrl, res.Id);
+    };
     ArticleService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [http_1.Http])
     ], ArticleService);
     return ArticleService;
 }());

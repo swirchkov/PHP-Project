@@ -43,7 +43,6 @@ export class ArticleListComponent implements OnInit {
     private processArticleEnumerable(enumerable : Enumerable<Article> ) {
         this.articleEnumerable = enumerable;
         this.articles = this.articleEnumerable.Next();
-        console.log(enumerable);
     }
 
     private processTagEnumerable(enumerable : Enumerable<Tag>) {
