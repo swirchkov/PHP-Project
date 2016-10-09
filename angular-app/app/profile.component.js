@@ -22,22 +22,23 @@ var ProfileComponent = (function () {
         this.tagService = tagService;
         this.articleService = articleService;
         this.baseUrl = constants_1.Constants.BaseUrl;
+        // default display all articles
+        this.mode = this.ARTICLES;
+        // ------------------------------------------------------------------------------------
+        // section article editing
         // tag support
         this.tags = null;
         this.tagEnumerable = null;
-        this.tagsPerView = 8;
         this.selectedTags = null;
+        this.tagsPerView = 8;
         //editing
         this.article = new article_1.Article();
         //image file
         this.image = 'initial'; // to prevent error message before first interaction
-        // default display all articles
-        this.mode = this.ARTICLES;
         this.user = session_1.Session.AuthenticatedUser;
         this.selectedTags = new Array();
     }
     Object.defineProperty(ProfileComponent.prototype, "ARTICLES", {
-        // some kind of hack but addition field is too much as for me.
         // modes
         get: function () { return "articles"; },
         enumerable: true,
@@ -57,9 +58,14 @@ var ProfileComponent = (function () {
         this.tagEnumerable = enumerable;
         this.tags = this.tagEnumerable.Next();
     };
+    ProfileComponent.prototype.processArticleEnumerable = function (enumerable) {
+        this.articleEnumerable = enumerable;
+        this.articles = this.articleEnumerable.Next();
+    };
     ProfileComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.tagService.getMostRelavantTags(this.tagsPerView).then(function (enumer) { return _this.processTagEnumerable(enumer); });
+        this.articleService.getArticlesByUser(this.user, 2).then(function (enumer) { return _this.processArticleEnumerable(enumer); });
     };
     ProfileComponent.prototype.addTag = function (tag) {
         var position = this.selectedTags.indexOf(tag);

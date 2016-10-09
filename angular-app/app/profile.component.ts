@@ -24,21 +24,11 @@ import { Enumerable } from './library/enumerable';
     styleUrls : [ 'app/styles/profile.component.css', 'app/styles/header.css' ]
 })
 export class ProfileComponent {
-    user: User;
     baseUrl : string = Constants.BaseUrl;
     
-    // tag support
-    tags : Tag[] = null;
-    tagEnumerable : Enumerable<Tag> = null;
-    private tagsPerView = 8;
-    selectedTags: Tag[] = null;
-
-    //editing
-    article: Article = new Article();
-
-    //image file
-    image: any = 'initial'; // to prevent error message before first interaction
-                            // some kind of hack but addition field is too much as for me.
+    // current user
+    user: User;
+    
     // modes
     private get ARTICLES() { return "articles"; }
     private get EDIT_ARTICLE() { return "edit article"; }
@@ -46,6 +36,33 @@ export class ProfileComponent {
 
     // default display all articles
     mode: string = this.ARTICLES;
+
+    // ------------------------------------------------------------------------------------
+
+    // section article editing
+    // tag support
+    tags : Tag[] = null;
+    tagEnumerable : Enumerable<Tag> = null;
+
+    selectedTags: Tag[] = null;
+
+    private tagsPerView = 8;
+
+    //editing
+    article: Article = new Article();
+
+    //image file
+    image: any = 'initial'; // to prevent error message before first interaction
+                            // some kind of hack but addition field is too much as for me.
+
+    // end section article editing
+
+    // -----------------------------------------------------------------------------------
+    
+    // section article list
+
+    articles: Article[];
+    articleEnumerable: Enumerable<Article>;
 
     constructor(private tagService : TagService, private articleService : ArticleService) {
         this.user = Session.AuthenticatedUser;
@@ -57,8 +74,14 @@ export class ProfileComponent {
         this.tags = this.tagEnumerable.Next();
     }
 
+    private processArticleEnumerable(enumerable : Enumerable<Article>) {
+        this.articleEnumerable = enumerable;
+        this.articles = this.articleEnumerable.Next();
+    }
+
     ngOnInit() {
         this.tagService.getMostRelavantTags(this.tagsPerView).then((enumer) => this.processTagEnumerable(enumer));
+        this.articleService.getArticlesByUser(this.user, 2).then((enumer) => this.processArticleEnumerable(enumer));
     }
 
     addTag(tag : Tag) {

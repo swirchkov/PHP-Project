@@ -15,6 +15,9 @@ import { Session } from "./session";
 // library
 import { Enumerable } from './library/enumerable';
 
+// constants
+import { Constants } from "./constants"
+
 @Component({
     selector: 'article-list',
     templateUrl: "app/views/article-list.component.html",
@@ -35,6 +38,8 @@ export class ArticleListComponent implements OnInit {
 
     private articlesPerView = 2;
     private tagsPerView = 8;
+
+    private baseUrl = Constants.BaseUrl;
 
     constructor(private articleService : ArticleService, private tagService: TagService) {
         this.user = Session.AuthenticatedUser;

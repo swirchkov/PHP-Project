@@ -27,28 +27,39 @@ export class ArticleService {
 
     public constructor(private http : Http) {
         this.user = Session.AuthenticatedUser;
-     }
+    }
+
+    private getArticles() : Promise<Article[]> {
+        return this.http.get(this.articleRootUrl+ "all.php").toPromise().then((res) => this.transformToArticleArray(res));
+    }
 
     public getMostRelavantArticles(count : number) : Promise<Enumerable<Article>> {
-        return Promise.resolve(new Enumerable(this.articles, count));
+        return this.getArticles().then((arr) => new Enumerable(arr, count));
     }
 
     public getArticlesByTag(tag: string, count : number) : Promise<Enumerable<Article>> {
-        return Promise.resolve(
-            new Enumerable( this.articles.filter((value) => {
-                return value.Tags.indexOf(tag) != -1;
-            }), count)
-        );
+
+        return this.getArticles().then( (arr) =>           
+                        new Enumerable( arr.filter((value) => {
+                            return value.Tags.indexOf(tag) != -1;
+                        }), count)
+                    );
     }
 
     public getArticlesByQuery(query: string, count : number): Promise<Enumerable<Article>> {
-        return Promise.resolve(
-             new Enumerable(
-                  this.articles.filter((value) => {
-                    query = query.toUpperCase();
-                    return value.Title.toUpperCase().indexOf(query) != -1;
-            }), count )
-        );
+        return this.getArticles().then((arr) => {
+                    return new Enumerable(
+                        arr.filter((value) => {
+                            query = query.toUpperCase();
+                            return value.Title.toUpperCase().indexOf(query) != -1; 
+                        }), count )
+                });
+    }   
+
+    public getArticlesByUser(user:User, count:number) : Promise<Enumerable<Article>> {
+        return this.getArticles().then((arr) => {
+            return new Enumerable(arr.filter((article) => article.AuthorId == user.Id ), count);
+        });
     }
 
     public pusblishArticle(article: Article, image: File) : Promise<Article> {
@@ -62,6 +73,12 @@ export class ArticleService {
 
         return this.http.post(this.articleRootUrl + 'create.php', formData).toPromise()
                     .then((res) => this.transformToArticle(res, article));
+    }
+
+    private transformToArticleArray(res: any) {
+        res = JSON.parse(res._body);
+        return res.map((obj) => 
+                    new Article(obj.Title, obj.AuthorName, obj.AuthorId, obj.Text, obj.Tags.split(' '), obj.Image, obj.Id));
     }
 
     private transformToArticle(res: any, req: Article) : Article {

@@ -1,14 +1,16 @@
 <?php 
     class Article {
-        private $id, $title, $tags, $text, $image, $authorId;
+        private $id, $title, $tags, $text, $image, $authorId, $authorName;
 
-        public function __construct($title = null, $tags = null, $text = null, $image = null, $authorId = 0, $id = 0) {
+        public function __construct($title = null, $tags = null, $text = null, $image = null, $authorId = 0, 
+                                    $authorName = null, $id = 0) {
             $this->id = $id;
             $this->title = $title;
             $this->tags = $tags;
             $this->text = $text;
             $this->image = $image;
             $this->authorId = $authorId;
+            $this->authorName = $authorName;
         }
 
         public function getId() { return $this->id; }
@@ -27,6 +29,9 @@
 
         public function getAuthorId() { return $this->authorId; }
         public function setAuthorId($value) { $this->authorId = $value; }
+
+        public function getAuthorName() { return $this->authorName; }
+        public function setAuthorName($value) { $this->authorName = $value; }
           
     }
 ?>

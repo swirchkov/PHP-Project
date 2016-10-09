@@ -218,3 +218,6 @@ footer {
 .cursor-pointer {
     cursor: pointer;
 }
+.panel-body {
+    word-wrap: break-word;
+}

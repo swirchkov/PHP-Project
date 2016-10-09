@@ -63,27 +63,21 @@
         Working with articles on site
     </div>
 
-    <div class="container">
+    <div class="container" *ngFor='let article of articles'>
         <div class="row article-header-row">
             <div class="col-lg-6 text-left color-red article-title">
-                Title
+                {{ article.Title }}
             </div>
             <div class="col-lg-6 text-right color-red">
-                #tag1 #tag2 #tag3
+                {{ article.Tags.join(' ') }}
             </div>
         </div>
         <div class="row article-container-row">
             <div class="col-lg-3 padding-top-20">
-                <img src='../../images/ava.png' class="img-rounded float-right" width='250' height='200' />
+                <img [src]='baseUrl + article.ImageUrl' class="img-rounded float-right" width='250' height='200' />
             </div>
             <div class="col-lg-9 article-content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Nullam non aliquam risus, vitae finibus lectus. Sed consectetur justo diam, suscipit rhoncus dolor eleifend quis. 
-    consectetur pulvinar metus in imperdiet. Maecenas vel nunc nec tortor ultrices ultrices. Aenean tempor venenatis mi, 
-    in luctus lorem bibendum vel. Nam diam nunc, commodo quis lobortis sed, sagittis id tellus. Quisque quis tortor pharetra 
-    sapien auctor molestie id non arcu. Aenean a egestas arcu. Quisque gravida ante tincidunt consectetur molestie.
-    Nullam ut diam lectus. Ut eu euismod massa. Maecenas aliquam venenatis turpis nec fermentum. Nullam viverra interdum sem 
-    quis hendrerit. Mauris velit mi, mattis vel massa non, faucibus eleifend eros. Pellentesque molestie in ligula ut venenatis.
+                {{ article.Text }}
             </div>
         </div>
         <div class="row text-center">
@@ -95,37 +89,21 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="row article-header-row">
-            <div class="col-lg-6 text-left color-red article-title">
-                Title
-            </div>
-            <div class="col-lg-6 text-right color-red">
-                #tag1 #tag2 #tag3
-            </div>
-        </div>
-        <div class="row article-container-row">
-            <div class="col-lg-3">
-                <img src='../../images/ava.png' class="img-rounded float-right" width='250' height='200' />
-            </div>
-            <div class="col-lg-9 article-content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Nullam non aliquam risus, vitae finibus lectus. Sed consectetur justo diam, suscipit rhoncus dolor eleifend quis. 
-    consectetur pulvinar metus in imperdiet. Maecenas vel nunc nec tortor ultrices ultrices. Aenean tempor venenatis mi, 
-    in luctus lorem bibendum vel. Nam diam nunc, commodo quis lobortis sed, sagittis id tellus. Quisque quis tortor pharetra 
-    sapien auctor molestie id non arcu. Aenean a egestas arcu. Quisque gravida ante tincidunt consectetur molestie.
-    Nullam ut diam lectus. Ut eu euismod massa. Maecenas aliquam venenatis turpis nec fermentum. Nullam viverra interdum sem 
-    quis hendrerit. Mauris velit mi, mattis vel massa non, faucibus eleifend eros. Pellentesque molestie in ligula ut venenatis.
-            </div>
-        </div>
-        <div class="row text-center">
-            <div class="btn edit-btn"> 
-                <a class='color-red'> Edit article </a>
-                <a class='color-red'> Delete article </a>
-            </div>
-
-        </div>
-    </div>
+    <div class='pagination-container article-pagination-container' 
+        [hidden] = 'articleEnumerable != null && !articleEnumerable.canMoveBack() && !articleEnumerable.canMoveNext()'>
+        <a class='pagination-left' [hidden]='articleEnumerable == null || !articleEnumerable.canMoveBack()'
+            (click)='this.articles = articleEnumerable.Previous();' >
+            <span class='glyphicon glyphicon-chevron-left'> </span> 
+        </a>
+        <a class='pagination-home'
+            (click)='this.articles = articleEnumerable.Reset()'>
+            <span class='glyphicon glyphicon-home'> </span> 
+        </a>
+        <a class='pagination-right' [hidden]='articleEnumerable != null && !articleEnumerable.canMoveNext()'
+            (click)='this.articles = articleEnumerable.Next();'>
+            <span class='glyphicon glyphicon-chevron-right'> </span> 
+        </a>
+    </div> 
 
 </main>
 

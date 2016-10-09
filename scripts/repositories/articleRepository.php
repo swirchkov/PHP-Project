@@ -5,6 +5,23 @@
             require_once('../models/article.php');
         }
 
+        private function getArticle($link, $title, $authorId) {
+            $query = sprintf("SELECT Id, Title, Tags, Image, TextField, AuthorId FROM Articles 
+                            WHERE Title = '%s' AND AuthorId = %d;", $title, $authorId);
+            
+            $result = mysqli_query($link, $query)  or die("Ошибка " . mysqli_error($link));
+            if (!$result) { return false; }
+
+            $row = mysqli_fetch_row($result);
+            if (!$row) { return false; }
+
+            $article = new Article($row[1], $row[2], $row[4], $row[3], $row[5], $row[0]);
+
+            mysqli_free_result($result);
+
+            return $article;
+        }
+
         public function createArticle($article) {
             include('../config.php');
 
@@ -31,21 +48,33 @@
             return $article;
         }
 
-        private function getArticle($link, $title, $authorId) {
-            $query = sprintf("SELECT Id, Title, Tags, Image, TextField, AuthorId FROM Articles 
-                            WHERE Title = '%s' AND AuthorId = %d;", $title, $authorId);
-            
-            $result = mysqli_query($link, $query)  or die("Ошибка " . mysqli_error($link));
-            if (!$result) { return false; }
+        public function getAllArticles() {
+            require_once('../config.php');
 
-            $row = mysqli_fetch_row($result);
-            if (!$row) { return false; }
+            $conn = new mysqli($host, $dbUser, $dbPassword, $database);
 
-            $article = new Article($row[1], $row[2], $row[4], $row[3], $row[5], $row[0]);
+            if ($conn->connect_error) {
+                die("Error ".$conn->connect_error);
+            }
 
-            mysqli_free_result($result);
+            $query = "SELECT Articles.Id as Id, Title, Tags, TextField, Articles.Image as Image, AuthorId, 
+            Users.Login as AuthorName FROM Articles, Users WHERE Articles.AuthorId = Users.Id";
 
-            return $article;
+            $result = $conn->query($query);
+
+            if($result->num_rows > 0) {
+                $resArr = array();
+                // forming output data
+                while($row = $result->fetch_assoc()) {
+                    $article = new Article($row['Title'], $row['Tags'], $row['TextField'], $row['Image'], $row['AuthorId'], 
+                                $row['AuthorName'], $row['Id']);
+                    array_push($resArr, $article);
+                }
+                return $resArr;
+            }
+            else {
+                return array();
+            } 
         }
     }
 ?>

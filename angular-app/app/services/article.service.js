@@ -29,19 +29,32 @@ var ArticleService = (function () {
         this.user = null;
         this.user = session_1.Session.AuthenticatedUser;
     }
+    ArticleService.prototype.getArticles = function () {
+        var _this = this;
+        return this.http.get(this.articleRootUrl + "all.php").toPromise().then(function (res) { return _this.transformToArticleArray(res); });
+    };
     ArticleService.prototype.getMostRelavantArticles = function (count) {
-        return Promise.resolve(new enumerable_1.Enumerable(this.articles, count));
+        return this.getArticles().then(function (arr) { return new enumerable_1.Enumerable(arr, count); });
     };
     ArticleService.prototype.getArticlesByTag = function (tag, count) {
-        return Promise.resolve(new enumerable_1.Enumerable(this.articles.filter(function (value) {
-            return value.Tags.indexOf(tag) != -1;
-        }), count));
+        return this.getArticles().then(function (arr) {
+            return new enumerable_1.Enumerable(arr.filter(function (value) {
+                return value.Tags.indexOf(tag) != -1;
+            }), count);
+        });
     };
     ArticleService.prototype.getArticlesByQuery = function (query, count) {
-        return Promise.resolve(new enumerable_1.Enumerable(this.articles.filter(function (value) {
-            query = query.toUpperCase();
-            return value.Title.toUpperCase().indexOf(query) != -1;
-        }), count));
+        return this.getArticles().then(function (arr) {
+            return new enumerable_1.Enumerable(arr.filter(function (value) {
+                query = query.toUpperCase();
+                return value.Title.toUpperCase().indexOf(query) != -1;
+            }), count);
+        });
+    };
+    ArticleService.prototype.getArticlesByUser = function (user, count) {
+        return this.getArticles().then(function (arr) {
+            return new enumerable_1.Enumerable(arr.filter(function (article) { return article.AuthorId == user.Id; }), count);
+        });
     };
     ArticleService.prototype.pusblishArticle = function (article, image) {
         var _this = this;
@@ -53,6 +66,12 @@ var ArticleService = (function () {
         formData.append('authorId', article.AuthorId);
         return this.http.post(this.articleRootUrl + 'create.php', formData).toPromise()
             .then(function (res) { return _this.transformToArticle(res, article); });
+    };
+    ArticleService.prototype.transformToArticleArray = function (res) {
+        res = JSON.parse(res._body);
+        return res.map(function (obj) {
+            return new article_1.Article(obj.Title, obj.AuthorName, obj.AuthorId, obj.Text, obj.Tags.split(' '), obj.Image, obj.Id);
+        });
     };
     ArticleService.prototype.transformToArticle = function (res, req) {
         res = JSON.parse(res._body);

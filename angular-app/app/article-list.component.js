@@ -14,6 +14,8 @@ var article_service_1 = require("./services/article.service");
 var tag_service_1 = require("./services/tag.service");
 // session
 var session_1 = require("./session");
+// constants
+var constants_1 = require("./constants");
 var ArticleListComponent = (function () {
     function ArticleListComponent(articleService, tagService) {
         this.articleService = articleService;
@@ -25,6 +27,7 @@ var ArticleListComponent = (function () {
         this.articleEnumerable = null;
         this.articlesPerView = 2;
         this.tagsPerView = 8;
+        this.baseUrl = constants_1.Constants.BaseUrl;
         this.user = session_1.Session.AuthenticatedUser;
     }
     ArticleListComponent.prototype.processArticleEnumerable = function (enumerable) {
