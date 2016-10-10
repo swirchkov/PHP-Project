@@ -62,7 +62,7 @@ export class ArticleService {
         });
     }
 
-    public pusblishArticle(article: Article, image: File) : Promise<Article> {
+    public publishArticle(article: Article, image: File) : Promise<Article> {
         var formData = new FormData();
 
         formData.append('title', article.Title);
@@ -73,6 +73,27 @@ export class ArticleService {
 
         return this.http.post(this.articleRootUrl + 'create.php', formData).toPromise()
                     .then((res) => this.transformToArticle(res, article));
+    }
+
+    public updateArticle(article:Article, image: File) : Promise<Article> {
+        var formData = new FormData();
+
+        formData.append('title', article.Title);
+        formData.append('id', article.Id);
+        formData.append('text', article.Text);
+        formData.append('imageFile', image);
+        formData.append('tags', article.Tags.join(' '));
+        formData.append('authorId', article.AuthorId);
+
+        return this.http.post(this.articleRootUrl + "update.php", formData).toPromise()
+                    .then((res) => this.transformToArticle(res,article));
+    }
+
+    public deleteArticle(article: Article) : Promise<string> {
+        var formData = new FormData();
+        formData.append("Id", article.Id);
+        return this.http.post(this.articleRootUrl + "delete.php", formData).toPromise()
+                .then((res) => res.json().Result);
     }
 
     private transformToArticleArray(res: any) {

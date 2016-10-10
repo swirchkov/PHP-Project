@@ -33,14 +33,23 @@ var ProfileComponent = (function () {
         this.tagsPerView = 8;
         //editing
         this.article = new article_1.Article();
-        //image file
-        this.image = 'initial'; // to prevent error message before first interaction
+        this.isArticleEditing = false;
+        this.isTouched = false;
+        // end section article list
+        // -----------------------------------------------------------------------------------
+        // section delete article
+        this.isDeleteExecuted = false;
         this.user = session_1.Session.AuthenticatedUser;
         this.selectedTags = new Array();
     }
     Object.defineProperty(ProfileComponent.prototype, "ARTICLES", {
         // modes
         get: function () { return "articles"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ProfileComponent.prototype, "CREATE_ARTICLE", {
+        get: function () { return 'create article'; },
         enumerable: true,
         configurable: true
     });
@@ -51,6 +60,11 @@ var ProfileComponent = (function () {
     });
     Object.defineProperty(ProfileComponent.prototype, "PROFILE", {
         get: function () { return 'profile'; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ProfileComponent.prototype, "DELETE_ARTICLE", {
+        get: function () { return "delete article"; },
         enumerable: true,
         configurable: true
     });
@@ -67,6 +81,10 @@ var ProfileComponent = (function () {
         this.tagService.getMostRelavantTags(this.tagsPerView).then(function (enumer) { return _this.processTagEnumerable(enumer); });
         this.articleService.getArticlesByUser(this.user, 2).then(function (enumer) { return _this.processArticleEnumerable(enumer); });
     };
+    ProfileComponent.prototype.gotoNewArticle = function () {
+        this.mode = this.CREATE_ARTICLE;
+        this.article = new article_1.Article();
+    };
     ProfileComponent.prototype.addTag = function (tag) {
         var position = this.selectedTags.indexOf(tag);
         if (position == -1) {
@@ -78,15 +96,49 @@ var ProfileComponent = (function () {
     };
     ProfileComponent.prototype.onImageChanged = function ($event) {
         this.image = $event.srcElement.files[0];
+        this.isTouched = true;
     };
     ProfileComponent.prototype.onArticleSubmit = function () {
         var _this = this;
         this.article.Tags = this.selectedTags.map(function (tag) { return tag.Tag; });
         this.article.AuthorId = this.user.Id;
         this.article.AuthorName = this.user.Login;
-        this.articleService.pusblishArticle(this.article, this.image).then(function (art) {
-            _this.article = art;
-            console.log(art);
+        if (!this.isArticleEditing) {
+            this.articleService.publishArticle(this.article, this.image).then(function (art) {
+                _this.article = art;
+                _this.mode = _this.ARTICLES;
+            });
+        }
+        else {
+            this.articleService.updateArticle(this.article, this.image).then(function (art) {
+                _this.article = art;
+                _this.mode = _this.ARTICLES;
+            });
+        }
+    };
+    ProfileComponent.prototype.onArticleEdit = function (article) {
+        this.article = article;
+        this.selectedTags = this.tags.filter(function (value) { return article.Tags.indexOf(value.Tag) != -1; });
+        this.mode = this.EDIT_ARTICLE;
+        this.isArticleEditing = true;
+    };
+    ProfileComponent.prototype.onDeleteArticle = function (article) {
+        this.article = article;
+        this.mode = this.DELETE_ARTICLE;
+    };
+    ProfileComponent.prototype.onDeleteConfirmed = function () {
+        var _this = this;
+        this.articleService.deleteArticle(this.article).then(function (result) {
+            _this.responseMessage = result;
+            _this.isDeleteExecuted = true;
+            var self = _this;
+            // show result for 3 seconds
+            setTimeout(function () {
+                self.mode = self.ARTICLES;
+                self.isDeleteExecuted = false;
+                self.responseMessage = null;
+                self.articleService.getArticlesByUser(self.user, 2).then(function (enumer) { return self.processArticleEnumerable(enumer); });
+            }, 1.5 * 1000);
         });
     };
     ProfileComponent = __decorate([

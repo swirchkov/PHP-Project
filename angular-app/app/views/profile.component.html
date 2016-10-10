@@ -49,8 +49,8 @@
         (click) = 'mode = ARTICLES;'>
             Edit articles
         </button>
-        <button type='button' [class]='mode== EDIT_ARTICLES ? "btn btn-link active" : "btn btn-link"' 
-        (click) = 'mode = EDIT_ARTICLES'>
+        <button type='button' [class]='mode== CREATE_ARTICLE ? "btn btn-link active" : "btn btn-link"' 
+        (click) = 'gotoNewArticle();'>
             New article
         </button>
     </div>
@@ -82,8 +82,8 @@
         </div>
         <div class="row text-center">
             <div class="btn edit-btn"> 
-                <a class='color-red'> Edit article </a>
-                <a class='color-red'> Delete article </a>
+                <a class='color-red' (click)='onArticleEdit(article)'> Edit article </a>
+                <a class='color-red' (click)='onDeleteArticle(article)'> Delete article </a>
             </div>
 
         </div>
@@ -107,7 +107,25 @@
 
 </main>
 
-<main class='edit-container' [hidden] = 'mode != EDIT_ARTICLES'>
+<main class="delete-container" [hidden] = "mode != DELETE_ARTICLE">
+    <div class="delete-header">
+        Are you sure you want to delete article '{{ article.Title }}' ?
+    </div>
+    <div class="text-center delete-btn-block" [hidden] = 'isDeleteExecuted'>
+        <button type='button' class="btn btn-success" (click)='onDeleteConfirmed()'>
+            Delete
+        </button>
+        <button type='button' class="btn btn-danger margin-left-40" (click) ='this.mode = this.ARTICLES'>
+            Cancel
+        </button>
+    </div>
+
+    <div class="text-center delete-btn-block" [hidden]='!isDeleteExecuted'> 
+        {{ responseMessage }}
+    </div>
+</main>
+
+<main class='edit-container' [hidden] = 'mode != EDIT_ARTICLE && mode != CREATE_ARTICLE '>
     <form (ngSubmit)='onArticleSubmit()' #articleForm='ngForm'>
         <div class="row text-center form-header">
             Write new article
@@ -130,7 +148,11 @@
             
                 <input type='file' class="form-control col-lg-10" (change)='onImageChanged($event)' />
 
-                <div [class]=' image != undefined  ? "display-none" : "error"' > Image required </div>
+                <div [class]=' image != undefined || !isTouched  ? "display-none" : "error"' > Image required </div>
+
+                <div [class]='article.Id != 0 && !isTouched ? "help" : "display-none"'> 
+                    Choose new image or we will save current 
+                </div>
             </div>
             <div class="row border-underline">
                 <label class="col-lg-2 text-right">
@@ -173,7 +195,7 @@
         </div>
         <div class="col-lg-12 row text-center">
             <input type='submit' class="btn btn-success" value='Publish' 
-                [disabled] ='!articleForm.form.valid || image == undefined'/>
+                [disabled] ='!articleForm.form.valid || ( image == undefined && article.Id == 0)'/>
         </div>
     </form>
 </main>

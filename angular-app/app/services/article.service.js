@@ -56,7 +56,7 @@ var ArticleService = (function () {
             return new enumerable_1.Enumerable(arr.filter(function (article) { return article.AuthorId == user.Id; }), count);
         });
     };
-    ArticleService.prototype.pusblishArticle = function (article, image) {
+    ArticleService.prototype.publishArticle = function (article, image) {
         var _this = this;
         var formData = new FormData();
         formData.append('title', article.Title);
@@ -66,6 +66,24 @@ var ArticleService = (function () {
         formData.append('authorId', article.AuthorId);
         return this.http.post(this.articleRootUrl + 'create.php', formData).toPromise()
             .then(function (res) { return _this.transformToArticle(res, article); });
+    };
+    ArticleService.prototype.updateArticle = function (article, image) {
+        var _this = this;
+        var formData = new FormData();
+        formData.append('title', article.Title);
+        formData.append('id', article.Id);
+        formData.append('text', article.Text);
+        formData.append('imageFile', image);
+        formData.append('tags', article.Tags.join(' '));
+        formData.append('authorId', article.AuthorId);
+        return this.http.post(this.articleRootUrl + "update.php", formData).toPromise()
+            .then(function (res) { return _this.transformToArticle(res, article); });
+    };
+    ArticleService.prototype.deleteArticle = function (article) {
+        var formData = new FormData();
+        formData.append("Id", article.Id);
+        return this.http.post(this.articleRootUrl + "delete.php", formData).toPromise()
+            .then(function (res) { return res.json().Result; });
     };
     ArticleService.prototype.transformToArticleArray = function (res) {
         res = JSON.parse(res._body);

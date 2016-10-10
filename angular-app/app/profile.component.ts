@@ -31,8 +31,10 @@ export class ProfileComponent {
     
     // modes
     private get ARTICLES() { return "articles"; }
+    private get CREATE_ARTICLE() { return 'create article'; }
     private get EDIT_ARTICLE() { return "edit article"; }
     private get PROFILE() { return 'profile' }
+    private get DELETE_ARTICLE() { return "delete article"; }
 
     // default display all articles
     mode: string = this.ARTICLES;
@@ -50,10 +52,11 @@ export class ProfileComponent {
 
     //editing
     article: Article = new Article();
+    isArticleEditing = false;
 
     //image file
-    image: any = 'initial'; // to prevent error message before first interaction
-                            // some kind of hack but addition field is too much as for me.
+    image: any; // to prevent error message before first interaction
+    isTouched: Boolean = false;
 
     // end section article editing
 
@@ -63,6 +66,14 @@ export class ProfileComponent {
 
     articles: Article[];
     articleEnumerable: Enumerable<Article>;
+
+
+    // end section article list
+    // -----------------------------------------------------------------------------------
+    // section delete article
+
+    isDeleteExecuted = false;
+    responseMessage: string;
 
     constructor(private tagService : TagService, private articleService : ArticleService) {
         this.user = Session.AuthenticatedUser;
@@ -84,6 +95,11 @@ export class ProfileComponent {
         this.articleService.getArticlesByUser(this.user, 2).then((enumer) => this.processArticleEnumerable(enumer));
     }
 
+    gotoNewArticle() {
+        this.mode = this.CREATE_ARTICLE;
+        this.article = new Article();
+    }
+
     addTag(tag : Tag) {
         var position = this.selectedTags.indexOf(tag);
         if (position == -1) {
@@ -96,6 +112,7 @@ export class ProfileComponent {
 
     onImageChanged($event) {
         this.image = $event.srcElement.files[0];
+        this.isTouched = true;
     }
 
     onArticleSubmit() {
@@ -104,10 +121,50 @@ export class ProfileComponent {
         this.article.AuthorId = this.user.Id;
         this.article.AuthorName = this.user.Login;
 
-        this.articleService.pusblishArticle(this.article, this.image).then((art) => { 
-            this.article = art; 
-            console.log(art);
-        });
+        if (!this.isArticleEditing) {
+            this.articleService.publishArticle(this.article, this.image).then((art) => { 
+                this.article = art; 
+                this.mode = this.ARTICLES;
+            });
+        }
+        else {
+            this.articleService.updateArticle(this.article, this.image).then((art) => {
+                this.article = art;
+                this.mode = this.ARTICLES;
+            });
+        }
 
+    }
+
+    onArticleEdit(article : Article) {
+        this.article = article;
+        this.selectedTags = this.tags.filter(value => article.Tags.indexOf(value.Tag) != -1);
+
+        this.mode = this.EDIT_ARTICLE;
+        this.isArticleEditing = true;
+    }
+
+    onDeleteArticle(article : Article) {
+        this.article = article;
+        this.mode = this.DELETE_ARTICLE;
+    }
+
+    onDeleteConfirmed() {
+        this.articleService.deleteArticle(this.article).then((result) => {
+            this.responseMessage = result;
+            this.isDeleteExecuted = true;
+
+            var self = this;
+
+            // show result for 3 seconds
+            setTimeout(function () {
+                self.mode = self.ARTICLES;
+                self.isDeleteExecuted = false;
+                self.responseMessage = null;
+
+                self.articleService.getArticlesByUser(self.user, 2).then((enumer) => self.processArticleEnumerable(enumer));
+            }, 1.5 * 1000);
+
+        });
     }
 }
