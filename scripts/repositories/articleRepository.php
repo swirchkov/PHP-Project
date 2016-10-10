@@ -5,19 +5,24 @@
             require_once('../models/article.php');
         }
 
-        private function getArticle($link, $title, $authorId) {
-            $query = sprintf("SELECT Id, Title, Tags, Image, TextField, AuthorId FROM Articles 
-                            WHERE Title = '%s' AND AuthorId = %d;", $title, $authorId);
+        private function getArticle($conn, $title, $authorId) {
+            $query = sprintf("SELECT Articles.Id as Id, Title, Tags, Articles.Image as Image, TextField, AuthorId, 
+                Users.Login as Login FROM Articles, Users WHERE Title = '%s' AND AuthorId = %d 
+                AND Articles.AuthorId = Users.Id", $title, $authorId);
             
-            $result = mysqli_query($link, $query)  or die("Ошибка " . mysqli_error($link));
-            if (!$result) { return false; }
+            $result = $conn->query($query);
 
-            $row = mysqli_fetch_row($result);
-            if (!$row) { return false; }
+            if ($conn->error) {
+                die ('Error while selecting article : '.$conn->error);
+            }
 
-            $article = new Article($row[1], $row[2], $row[4], $row[3], $row[5], $row[0]);
+            $article = null;
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
 
-            mysqli_free_result($result);
+                $article = new Article($row["Title"], $row['Tags'], $row['TextField'], $row['Image'], $row['AuthorId'],
+                                $row['Login'], $row['Id']);
+            }
 
             return $article;
         }
@@ -48,25 +53,30 @@
         public function createArticle($article) {
             include('../config.php');
 
-            $link = mysqli_connect($host, $dbUser, $dbPassword, $database) 
-                or die("Ошибка " . mysqli_error($link));
+            $conn = new mysqli($host, $dbUser, $dbPassword, $database);
 
-            $article->setTitle(htmlentities(mysqli_real_escape_string($link, $article->getTitle())));
-            $article->setTags(htmlentities(mysqli_real_escape_string($link, $article->getTags())));
-            $article->setText(htmlentities(mysqli_real_escape_string($link, $article->getText())));
+            if ($conn->connect_error) {
+                die('Error : '.$conn->connect_error);
+            }
+
+            $article->setTitle(htmlentities(mysqli_real_escape_string($conn, $article->getTitle())));
+            $article->setTags(htmlentities(mysqli_real_escape_string($conn, $article->getTags())));
+            $article->setText(htmlentities(mysqli_real_escape_string($conn, $article->getText())));
             
 
             $query = sprintf('INSERT INTO Articles (Title, Tags, Image, TextField, AuthorId) 
                                 VALUES ("%s", "%s", "%s", "%s", "%d");', $article->getTitle(), $article->getTags(),
                                 $article->getImage(), $article->getText(), $article->getAuthorId());
             
-            $result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
+            $result = $conn->query($query);
 
-            if (!$result) { return false; }
+            if ($conn->error) {
+                die ("Error in request processing".$conn->error);
+            }
 
-            $article = $this->getArticle($link, $article->getTitle(), $article->getAuthorId());
+            $article = $this->getArticle($conn, $article->getTitle(), $article->getAuthorId());
 
-            mysqli_close($link);
+            $conn->close();
 
             return $article;
         }

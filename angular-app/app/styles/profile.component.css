@@ -291,3 +291,7 @@ footer {
 .margin-left-40 {
     margin-left: 40px;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
 
 //models
 import { User } from './models/user';
@@ -53,6 +54,7 @@ export class ProfileComponent {
     //editing
     article: Article = new Article();
     isArticleEditing = false;
+    articlesPerView = 2;
 
     //image file
     image: any; // to prevent error message before first interaction
@@ -75,7 +77,7 @@ export class ProfileComponent {
     isDeleteExecuted = false;
     responseMessage: string;
 
-    constructor(private tagService : TagService, private articleService : ArticleService) {
+    constructor(private tagService : TagService, private articleService : ArticleService, private router : Router) {
         this.user = Session.AuthenticatedUser;
         this.selectedTags = new Array<Tag>();
     }
@@ -92,7 +94,8 @@ export class ProfileComponent {
 
     ngOnInit() {
         this.tagService.getMostRelavantTags(this.tagsPerView).then((enumer) => this.processTagEnumerable(enumer));
-        this.articleService.getArticlesByUser(this.user, 2).then((enumer) => this.processArticleEnumerable(enumer));
+        this.articleService.getArticlesByUser(this.user, this.articlesPerView)
+                .then((enumer) => this.processArticleEnumerable(enumer));
     }
 
     gotoNewArticle() {
@@ -123,8 +126,12 @@ export class ProfileComponent {
 
         if (!this.isArticleEditing) {
             this.articleService.publishArticle(this.article, this.image).then((art) => { 
+                
                 this.article = art; 
                 this.mode = this.ARTICLES;
+
+                this.articleService.getMostRelavantArticles(this.articlesPerView)
+                        .then((enumer) => this.processArticleEnumerable(enumer));
             });
         }
         else {
@@ -162,9 +169,15 @@ export class ProfileComponent {
                 self.isDeleteExecuted = false;
                 self.responseMessage = null;
 
-                self.articleService.getArticlesByUser(self.user, 2).then((enumer) => self.processArticleEnumerable(enumer));
+                self.articleService.getArticlesByUser(self.user, self.articlesPerView)
+                    .then((enumer) => self.processArticleEnumerable(enumer));
             }, 1.5 * 1000);
 
         });
+    }
+
+    logOut() {
+        Session.AuthenticatedUser = null;
+        this.router.navigate([ '/articles' ]);
     }
 }

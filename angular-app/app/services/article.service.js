@@ -34,18 +34,19 @@ var ArticleService = (function () {
         return this.http.get(this.articleRootUrl + "all.php").toPromise().then(function (res) { return _this.transformToArticleArray(res); });
     };
     ArticleService.prototype.getMostRelavantArticles = function (count) {
-        return this.getArticles().then(function (arr) { return new enumerable_1.Enumerable(arr, count); });
+        // articles reverse to show last published as first
+        return this.getArticles().then(function (arr) { return new enumerable_1.Enumerable(arr.reverse(), count); });
     };
     ArticleService.prototype.getArticlesByTag = function (tag, count) {
         return this.getArticles().then(function (arr) {
-            return new enumerable_1.Enumerable(arr.filter(function (value) {
+            return new enumerable_1.Enumerable(arr.reverse().filter(function (value) {
                 return value.Tags.indexOf(tag) != -1;
             }), count);
         });
     };
     ArticleService.prototype.getArticlesByQuery = function (query, count) {
         return this.getArticles().then(function (arr) {
-            return new enumerable_1.Enumerable(arr.filter(function (value) {
+            return new enumerable_1.Enumerable(arr.reverse().filter(function (value) {
                 query = query.toUpperCase();
                 return value.Title.toUpperCase().indexOf(query) != -1;
             }), count);
@@ -53,7 +54,7 @@ var ArticleService = (function () {
     };
     ArticleService.prototype.getArticlesByUser = function (user, count) {
         return this.getArticles().then(function (arr) {
-            return new enumerable_1.Enumerable(arr.filter(function (article) { return article.AuthorId == user.Id; }), count);
+            return new enumerable_1.Enumerable(arr.reverse().filter(function (article) { return article.AuthorId == user.Id; }), count);
         });
     };
     ArticleService.prototype.publishArticle = function (article, image) {

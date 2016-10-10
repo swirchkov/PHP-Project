@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS Users (
 CREATE TABLE IF NOT EXISTS Articles (
     Id int(6) UNSIGNED NOT NULL auto_increment PRIMARY KEY,
     Title varchar(50) NOT NULL default '',
-    TextField varchar(1000) NOT NULL default '',
+    TextField TEXT NOT NULL default '',
     Image varchar(50) NOT NULL default '',
     Tags varchar(100) NOT NULL default '' ,
     AuthorId int(6),

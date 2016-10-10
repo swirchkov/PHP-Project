@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require("@angular/router");
 var article_1 = require('./models/article');
 //session
 var session_1 = require('./session');
@@ -18,9 +19,10 @@ var constants_1 = require('./constants');
 var tag_service_1 = require('./services/tag.service');
 var article_service_1 = require("./services/article.service");
 var ProfileComponent = (function () {
-    function ProfileComponent(tagService, articleService) {
+    function ProfileComponent(tagService, articleService, router) {
         this.tagService = tagService;
         this.articleService = articleService;
+        this.router = router;
         this.baseUrl = constants_1.Constants.BaseUrl;
         // default display all articles
         this.mode = this.ARTICLES;
@@ -34,6 +36,7 @@ var ProfileComponent = (function () {
         //editing
         this.article = new article_1.Article();
         this.isArticleEditing = false;
+        this.articlesPerView = 2;
         this.isTouched = false;
         // end section article list
         // -----------------------------------------------------------------------------------
@@ -79,7 +82,8 @@ var ProfileComponent = (function () {
     ProfileComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.tagService.getMostRelavantTags(this.tagsPerView).then(function (enumer) { return _this.processTagEnumerable(enumer); });
-        this.articleService.getArticlesByUser(this.user, 2).then(function (enumer) { return _this.processArticleEnumerable(enumer); });
+        this.articleService.getArticlesByUser(this.user, this.articlesPerView)
+            .then(function (enumer) { return _this.processArticleEnumerable(enumer); });
     };
     ProfileComponent.prototype.gotoNewArticle = function () {
         this.mode = this.CREATE_ARTICLE;
@@ -107,6 +111,8 @@ var ProfileComponent = (function () {
             this.articleService.publishArticle(this.article, this.image).then(function (art) {
                 _this.article = art;
                 _this.mode = _this.ARTICLES;
+                _this.articleService.getMostRelavantArticles(_this.articlesPerView)
+                    .then(function (enumer) { return _this.processArticleEnumerable(enumer); });
             });
         }
         else {
@@ -137,9 +143,14 @@ var ProfileComponent = (function () {
                 self.mode = self.ARTICLES;
                 self.isDeleteExecuted = false;
                 self.responseMessage = null;
-                self.articleService.getArticlesByUser(self.user, 2).then(function (enumer) { return self.processArticleEnumerable(enumer); });
+                self.articleService.getArticlesByUser(self.user, self.articlesPerView)
+                    .then(function (enumer) { return self.processArticleEnumerable(enumer); });
             }, 1.5 * 1000);
         });
+    };
+    ProfileComponent.prototype.logOut = function () {
+        session_1.Session.AuthenticatedUser = null;
+        this.router.navigate(['/articles']);
     };
     ProfileComponent = __decorate([
         core_1.Component({
@@ -147,7 +158,7 @@ var ProfileComponent = (function () {
             templateUrl: 'app/views/profile.component.html',
             styleUrls: ['app/styles/profile.component.css', 'app/styles/header.css']
         }), 
-        __metadata('design:paramtypes', [tag_service_1.TagService, article_service_1.ArticleService])
+        __metadata('design:paramtypes', [tag_service_1.TagService, article_service_1.ArticleService, router_1.Router])
     ], ProfileComponent);
     return ProfileComponent;
 }());

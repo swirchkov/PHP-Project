@@ -34,13 +34,14 @@ export class ArticleService {
     }
 
     public getMostRelavantArticles(count : number) : Promise<Enumerable<Article>> {
-        return this.getArticles().then((arr) => new Enumerable(arr, count));
+        // articles reverse to show last published as first
+        return this.getArticles().then((arr) => new Enumerable(arr.reverse(), count));
     }
 
     public getArticlesByTag(tag: string, count : number) : Promise<Enumerable<Article>> {
 
         return this.getArticles().then( (arr) =>           
-                        new Enumerable( arr.filter((value) => {
+                        new Enumerable( arr.reverse().filter((value) => {
                             return value.Tags.indexOf(tag) != -1;
                         }), count)
                     );
@@ -49,7 +50,7 @@ export class ArticleService {
     public getArticlesByQuery(query: string, count : number): Promise<Enumerable<Article>> {
         return this.getArticles().then((arr) => {
                     return new Enumerable(
-                        arr.filter((value) => {
+                        arr.reverse().filter((value) => {
                             query = query.toUpperCase();
                             return value.Title.toUpperCase().indexOf(query) != -1; 
                         }), count )
@@ -58,7 +59,7 @@ export class ArticleService {
 
     public getArticlesByUser(user:User, count:number) : Promise<Enumerable<Article>> {
         return this.getArticles().then((arr) => {
-            return new Enumerable(arr.filter((article) => article.AuthorId == user.Id ), count);
+            return new Enumerable(arr.reverse().filter((article) => article.AuthorId == user.Id ), count);
         });
     }
 

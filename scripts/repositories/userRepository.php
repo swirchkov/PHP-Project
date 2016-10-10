@@ -10,12 +10,16 @@
 
             include('../config.php');
             
-            $link = mysqli_connect($host, $dbUser, $dbPassword, $database) 
-                or die("Ошибка " . mysqli_error($link));
+            $conn = new mysqli($host, $dbUser, $dbPassword, $database);
 
-            $user = $this->getUserByLogin($link, $login);
+            if ($conn->connect_error) {
+                echo "Error in login : ".$conn->connect_error;
+            }
 
-            mysqli_close($link);
+
+            $user = $this->getUserByLogin($conn, $login);
+
+            $conn->close();
 
             if ($user->getPassword() == $password) {
                 return $user;
@@ -26,64 +30,65 @@
 
         public function registerUser($login, $email, $pass, $image) {
             include('../config.php');
-            $dbLink = mysqli_connect($host, $dbUser, $dbPassword, $database) or die('cannot connect to mysql');
+            $conn = new mysqli($host, $dbUser, $dbPassword, $database);
 
-            $login = htmlentities(mysqli_real_escape_string($dbLink, $login));
-            $email = htmlentities(mysqli_real_escape_string($dbLink, $email));
-            $pass = htmlentities(mysqli_real_escape_string($dbLink, $pass));
+            if ($conn->connect_error) {
+                echo "Error in register : ".$conn->connect_error;
+            }
 
-            if (!$this->isFreeLogin($dbLink, $login)) {
+            $login = htmlentities(mysqli_real_escape_string($conn, $login));
+            $email = htmlentities(mysqli_real_escape_string($conn, $email));
+            $pass = htmlentities(mysqli_real_escape_string($conn, $pass));
+
+            if (!$this->isFreeLogin($conn, $login)) {
                 return false;
             }
 
             $query = 'INSERT INTO users ( Login, Password, Email, Image) 
                                     VALUES ("'.$login.'", "'.$pass.'", "'.$email.'", "'.$image.'" )';
             
-            $result = mysqli_query($dbLink, $query) or die("Ошибка " . mysqli_error($dbLink));
+            $result = $conn->query($query);
 
             // if success result is registred user else false
             if ($result) {
-                $result = $this->getUserByLogin($dbLink, $login);
+                $result = $this->getUserByLogin($conn, $login);
             }
 
-            mysqli_free_result($result);
-            mysqli_close($dbLink);
+            $conn->close();
 
             return $result;
         }
 
-        private function isFreeLogin($dbLink, $login) {
+        private function isFreeLogin($conn, $login) {
             $query = "SELECT * FROM users WHERE Login ='".$login."';";
 
-            $result = mysqli_query($dbLink, $query) or die("Ошибка " . mysqli_error($dbLink));
+            $result = $conn->query($query);
+            if ($result) {
+                return $result->num_rows == 0;
+            }
 
-            if ( $result == false) { return false; }
-
-            $row = mysqli_fetch_row($result);
-
-            return $row == false;
+            return false;
         }
 
-        private function getUserByLogin($dbLink, $login) {
+        private function getUserByLogin($conn, $login) {
             $query = "SELECT Id, Login, Password, Email, Image FROM users WHERE Login ='".$login."';";
 
-            $result = mysqli_query($dbLink, $query) or die("Ошибка " . mysqli_error($dbLink));
+            $result = $conn->query($query);
 
-            if ( $result == false) { return false; }
+            if (!$result ) {
+                echo 'Error : '.$conn->error;
+                return null;
+            }
 
-            $row = mysqli_fetch_row($result);
+            if ($result->num_rows == 0) {
+                echo 'no rows selected';
+                return null;
+            }
 
-            if( $row == false) { return false; }
+            $row = $result->fetch_assoc();
+            $user = new User($row['Login'], $row['Password'], $row['Email'], $row['Id'], $row['Image']);
 
-            $id = $row[0];
-            $login = $row[1];
-            $pass = $row[2];
-            $email = $row[3];
-            $image = $row[4];
-
-            mysqli_free_result($result);
-
-            return new User($login, $pass, $email, $id, $image);
+            return $user;
         } 
 
     }
