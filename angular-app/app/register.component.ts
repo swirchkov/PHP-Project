@@ -21,6 +21,8 @@ export class RegisterComponent {
     user: User = new User();
     confirmPassword: string = '';
     isFreeLogin = true;
+
+    private extensions = ['jpg', 'png', 'jpeg', 'gif'];
     
     public constructor(private service: UserService, private router: Router) {}
 
@@ -39,5 +41,12 @@ export class RegisterComponent {
 
             this.router.navigate(['articles']);
         });
+    }
+
+    private checkImageExtension() {
+        if ((<HTMLInputElement>document.getElementById('avatar')).files.length == 0) {
+            return true;
+        }
+        return this.extensions.indexOf((<HTMLInputElement>document.getElementById('avatar')).files[0].name) != -1;
     }
 }

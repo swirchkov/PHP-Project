@@ -91,7 +91,7 @@
             }
 
             $query = "SELECT Articles.Id as Id, Title, Tags, TextField, Articles.Image as Image, AuthorId, 
-            Users.Login as AuthorName FROM Articles, Users WHERE Articles.AuthorId = Users.Id";
+            Users.Login as AuthorName FROM Articles, Users WHERE Articles.AuthorId = Users.Id ORDER BY Id";
 
             $result = $conn->query($query);
 

@@ -76,6 +76,9 @@
                     <div [hidden] = '!image.touched || image.valid' class="alert alert-danger field-alert">
                         Image is required
                     </div> 
+                    <div [hidden]='checkImageExtension()'class="alert alert-danger field-alert" >
+                        Invalid file format
+                    </div>
                 </div>
 
             </div>
@@ -118,7 +121,7 @@
             <div class="form-group text-center">
                     
                 <button type='submit' class="btn enter-btn" (click)='registerUser()' 
-                    [disabled] = '!registerForm.form.valid || confirmPassword != user.Password'>
+                    [disabled] = '!registerForm.form.valid || confirmPassword != user.Password || !checkImageExtension()'>
                     Register
                 </button>
                     

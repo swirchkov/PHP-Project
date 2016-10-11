@@ -24,6 +24,7 @@ var RegisterComponent = (function () {
         this.user = new user_1.User();
         this.confirmPassword = '';
         this.isFreeLogin = true;
+        this.extensions = ['jpg', 'png', 'jpeg', 'gif'];
     }
     RegisterComponent.prototype.registerUser = function () {
         var _this = this;
@@ -37,6 +38,12 @@ var RegisterComponent = (function () {
             _this.user = user;
             _this.router.navigate(['articles']);
         });
+    };
+    RegisterComponent.prototype.checkImageExtension = function () {
+        if (document.getElementById('avatar').files.length == 0) {
+            return true;
+        }
+        return this.extensions.indexOf(document.getElementById('avatar').files[0].name) != -1;
     };
     RegisterComponent = __decorate([
         core_1.Component({
