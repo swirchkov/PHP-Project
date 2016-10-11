@@ -146,12 +146,16 @@
                     Article image
                 </label>
             
-                <input type='file' class="form-control col-lg-10" (change)='onImageChanged($event)' />
+                <input type='file' class="form-control col-lg-10" (change)='onImageChanged($event)' id='article-image' />
 
                 <div [class]=' image != undefined || !isTouched  ? "display-none" : "error"' > Image required </div>
 
                 <div [class]='article.Id != 0 && !isTouched ? "help" : "display-none"'> 
                     Choose new image or we will save current 
+                </div>
+
+                <div [class]="!checkImageExtension() ? 'error' : 'display-none' " >
+                    Invalid file format
                 </div>
             </div>
             <div class="row border-underline">
@@ -195,7 +199,7 @@
         </div>
         <div class="col-lg-12 row text-center">
             <input type='submit' class="btn btn-success" value='Publish' 
-                [disabled] ='!articleForm.form.valid || ( image == undefined && article.Id == 0)'/>
+                [disabled] ='!articleForm.form.valid || ( image == undefined && article.Id == 0) || !checkImageExtension()'/>
         </div>
     </form>
 </main>

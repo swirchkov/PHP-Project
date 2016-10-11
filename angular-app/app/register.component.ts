@@ -47,6 +47,7 @@ export class RegisterComponent {
         if ((<HTMLInputElement>document.getElementById('avatar')).files.length == 0) {
             return true;
         }
-        return this.extensions.indexOf((<HTMLInputElement>document.getElementById('avatar')).files[0].name) != -1;
+        return this.extensions.indexOf(
+            (<HTMLInputElement>document.getElementById('avatar')).files[0].name.split('.').pop()) != -1;
     }
 }

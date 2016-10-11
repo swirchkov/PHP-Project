@@ -38,6 +38,7 @@ var ProfileComponent = (function () {
         this.isArticleEditing = false;
         this.articlesPerView = 2;
         this.isTouched = false;
+        this.extensions = ['jpg', 'png', 'jpeg', 'gif'];
         // end section article list
         // -----------------------------------------------------------------------------------
         // section delete article
@@ -151,6 +152,12 @@ var ProfileComponent = (function () {
     ProfileComponent.prototype.logOut = function () {
         session_1.Session.AuthenticatedUser = null;
         this.router.navigate(['/articles']);
+    };
+    ProfileComponent.prototype.checkImageExtension = function () {
+        if (document.getElementById('article-image').files.length == 0) {
+            return true;
+        }
+        return this.extensions.indexOf(document.getElementById('article-image').files[0].name.split('.').pop()) != -1;
     };
     ProfileComponent = __decorate([
         core_1.Component({

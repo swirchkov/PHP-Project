@@ -43,7 +43,7 @@ var RegisterComponent = (function () {
         if (document.getElementById('avatar').files.length == 0) {
             return true;
         }
-        return this.extensions.indexOf(document.getElementById('avatar').files[0].name) != -1;
+        return this.extensions.indexOf(document.getElementById('avatar').files[0].name.split('.').pop()) != -1;
     };
     RegisterComponent = __decorate([
         core_1.Component({

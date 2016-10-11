@@ -60,6 +60,8 @@ export class ProfileComponent {
     image: any; // to prevent error message before first interaction
     isTouched: Boolean = false;
 
+    private extensions = ['jpg', 'png', 'jpeg', 'gif'];
+
     // end section article editing
 
     // -----------------------------------------------------------------------------------
@@ -179,5 +181,13 @@ export class ProfileComponent {
     logOut() {
         Session.AuthenticatedUser = null;
         this.router.navigate([ '/articles' ]);
+    }
+
+    private checkImageExtension() {
+        if ((<HTMLInputElement>document.getElementById('article-image')).files.length == 0) {
+            return true;
+        }
+        return this.extensions.indexOf(
+            (<HTMLInputElement>document.getElementById('article-image')).files[0].name.split('.').pop()) != -1;
     }
 }
