@@ -43,7 +43,7 @@
             
             <div class='panel-body'>
                 <img [src]='baseUrl + article.ImageUrl' class='img-rounded left-img' width='220' height='150' />
-                {{ article.Text }}
+                {{ article.Text.substr(0, 1500) }}
             </div>
 
             <div class='panel-footer back-white'>

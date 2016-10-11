@@ -77,7 +77,7 @@
                 <img [src]='baseUrl + article.ImageUrl' class="img-rounded float-right" width='250' height='200' />
             </div>
             <div class="col-lg-9 article-content">
-                {{ article.Text }}
+                {{ article.Text.substr(0, 1000) }}
             </div>
         </div>
         <div class="row text-center">
