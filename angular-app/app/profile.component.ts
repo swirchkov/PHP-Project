@@ -15,6 +15,7 @@ import { Constants } from './constants';
 //service
 import { TagService } from './services/tag.service';
 import { ArticleService } from "./services/article.service";
+import { UserService } from "./services/user.service";
 
 // Enumerable
 import { Enumerable } from './library/enumerable';
@@ -79,7 +80,8 @@ export class ProfileComponent {
     isDeleteExecuted = false;
     responseMessage: string;
 
-    constructor(private tagService : TagService, private articleService : ArticleService, private router : Router) {
+    constructor(private tagService : TagService, private articleService : ArticleService, private router : Router, 
+        private userService : UserService) {
         this.user = Session.AuthenticatedUser;
         this.selectedTags = new Array<Tag>();
     }
@@ -175,6 +177,13 @@ export class ProfileComponent {
                     .then((enumer) => self.processArticleEnumerable(enumer));
             }, 1.5 * 1000);
 
+        });
+    }
+
+    public editUser() {
+        this.userService.editUser(this.user, 'avatar').then((user) => {
+            Session.AuthenticatedUser = user;
+            this.user = user; 
         });
     }
 

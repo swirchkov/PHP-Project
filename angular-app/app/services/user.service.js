@@ -22,6 +22,7 @@ var UserService = (function () {
         this.http = http;
         this.loginUrl = constants_1.Constants.BaseUrl + "/account/login.php";
         this.registerUrl = constants_1.Constants.BaseUrl + "/account/register.php";
+        this.updateUrl = constants_1.Constants.BaseUrl + "/account/update.php";
     }
     UserService.prototype.transformResponseToUser = function (res) {
         var user = res.json();
@@ -45,6 +46,17 @@ var UserService = (function () {
         formData.append('email', user.Email);
         formData.append('file', this.getImageFile(imageId));
         return this.http.post(this.registerUrl, formData)
+            .toPromise().then(function (res) { return _this.transformResponseToUser(res); });
+    };
+    UserService.prototype.editUser = function (user, imageId) {
+        var _this = this;
+        var formData = new FormData();
+        formData.append('id', user.Id);
+        formData.append('login', user.Login);
+        formData.append('password', user.Password);
+        formData.append('email', user.Email);
+        formData.append('file', this.getImageFile(imageId));
+        return this.http.post(this.updateUrl, formData)
             .toPromise().then(function (res) { return _this.transformResponseToUser(res); });
     };
     UserService.prototype.getImageFile = function (id) {

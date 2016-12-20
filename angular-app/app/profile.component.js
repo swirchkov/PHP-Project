@@ -18,11 +18,13 @@ var constants_1 = require('./constants');
 //service
 var tag_service_1 = require('./services/tag.service');
 var article_service_1 = require("./services/article.service");
+var user_service_1 = require("./services/user.service");
 var ProfileComponent = (function () {
-    function ProfileComponent(tagService, articleService, router) {
+    function ProfileComponent(tagService, articleService, router, userService) {
         this.tagService = tagService;
         this.articleService = articleService;
         this.router = router;
+        this.userService = userService;
         this.baseUrl = constants_1.Constants.BaseUrl;
         // default display all articles
         this.mode = this.ARTICLES;
@@ -149,6 +151,13 @@ var ProfileComponent = (function () {
             }, 1.5 * 1000);
         });
     };
+    ProfileComponent.prototype.editUser = function () {
+        var _this = this;
+        this.userService.editUser(this.user, 'avatar').then(function (user) {
+            session_1.Session.AuthenticatedUser = user;
+            _this.user = user;
+        });
+    };
     ProfileComponent.prototype.logOut = function () {
         session_1.Session.AuthenticatedUser = null;
         this.router.navigate(['/articles']);
@@ -165,7 +174,7 @@ var ProfileComponent = (function () {
             templateUrl: 'app/views/profile.component.html',
             styleUrls: ['app/styles/profile.component.css', 'app/styles/header.css']
         }), 
-        __metadata('design:paramtypes', [tag_service_1.TagService, article_service_1.ArticleService, router_1.Router])
+        __metadata('design:paramtypes', [tag_service_1.TagService, article_service_1.ArticleService, router_1.Router, user_service_1.UserService])
     ], ProfileComponent);
     return ProfileComponent;
 }());

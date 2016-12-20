@@ -295,3 +295,42 @@ footer {
 .cursor-pointer {
     cursor: pointer;
 }
+
+.login-form{
+    margin-top: 40px;
+
+    border-bottom : 3px solid #ddd;
+    border-bottom-left-radius: 170px;
+    border-bottom-right-radius: 170px;
+}
+
+.form-header {
+    text-align: center;
+    border-bottom: 1px #ddd solid;
+    font-style: italic;
+    font-size: 18px;
+}
+
+.margin-bottom-15 {
+    margin-bottom: 15px;
+}
+
+input[type='password'] {
+    max-width: 320px;
+}
+
+input[type='email'] {
+    max-width: 320px;
+}
+
+input[type='file'] {
+    max-width: 320px;
+}
+
+label {
+    padding-top: 8px;
+}
+
+.form-footer {
+    border-top: 1px #ddd solid;
+}

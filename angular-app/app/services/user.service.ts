@@ -16,6 +16,7 @@ export class UserService {
     
     private loginUrl = Constants.BaseUrl + "/account/login.php";
     private registerUrl = Constants.BaseUrl + "/account/register.php";
+    private updateUrl = Constants.BaseUrl + "/account/update.php";
 
     public constructor(private http: Http) {}
 
@@ -44,6 +45,18 @@ export class UserService {
 
         return this.http.post(this.registerUrl, formData)
         .toPromise().then((res) => this.transformResponseToUser(res));
+    }
+
+    public editUser(user : User, imageId: string) : Promise<User> {
+        var formData = new FormData();
+        formData.append('id', user.Id);
+        formData.append('login', user.Login);
+        formData.append('password', user.Password);
+        formData.append('email', user.Email);
+        formData.append('file', this.getImageFile(imageId));
+
+        return this.http.post(this.updateUrl, formData)
+            .toPromise().then((res) => this.transformResponseToUser(res));
     }
 
     private getImageFile(id: string) {

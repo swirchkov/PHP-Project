@@ -59,6 +59,37 @@
             return $result;
         }
 
+        public function editUser($id, $login, $email, $pass, $image) {
+            include('../config.php');
+            $conn = new mysqli($host, $dbUser, $dbPassword, $database);
+
+            if ($conn->connect_error) {
+                echo "Error in update : ".$conn->connect_error;
+            }
+
+            $login = htmlentities(mysqli_real_escape_string($conn, $login));
+            $email = htmlentities(mysqli_real_escape_string($conn, $email));
+            $pass = htmlentities(mysqli_real_escape_string($conn, $pass));
+
+            if ($this->isFreeLogin($conn, $login)) {
+                return false;
+            }
+
+            $query = 'UPDATE users SET Login = "'.$login.'", Password = "'.$pass.'", Email = "'.$email.'", Image = "'.$image.'" 
+                    WHERE Id='.$id.';';
+            
+            $result = $conn->query($query);
+
+            // if success result is updated user else false
+            if ($result) {
+                $result = $this->getUserByLogin($conn, $login);
+            }
+
+            $conn->close();
+
+            return $result;
+        }
+
         private function isFreeLogin($conn, $login) {
             $query = "SELECT * FROM users WHERE Login ='".$login."';";
 
