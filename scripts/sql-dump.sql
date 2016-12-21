@@ -1,6 +1,4 @@
-CREATE DATABASE IF NOT EXISTS `IBlog__Store`
-  DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
-USE IBlog__Store;
+USE b17_19337464_iblog;
 
 -- ---------------------------------------------------------------------
 

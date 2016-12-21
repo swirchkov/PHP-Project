@@ -1,0 +1,305 @@
+<header class='row header-row text-center'>
+	<div class=' col-md-3 col-lg-3 text-center'>
+		<a routerLink='/articles' class='root-link'>
+			<h3> ITBlog </h3>
+		</a>
+	</div>
+
+	<div class='col-md-6 col-lg-6 title'>
+		<i> Welcome to your profile </i>
+	</div>
+
+	<div class='col-md-3 col-lg-2 text-center link-container'>
+		<a class='dropdown-toggle cursor-pointer' type='button' data-toggle='dropdown'> 
+            Hello, {{ user.Login }} 
+            <span class='caret'></span>
+        </a>
+
+		<ul class="dropdown-menu">
+			<li> <a class='cursor-pointer' routerLink='/profile'> Profile </a> </li>
+			<li> <a class="cursor-pointer" (click)='logOut()'> Exit </a> </li>
+		</ul>
+	</div>
+</header>
+
+<main class='cur-data-container row'>
+
+	<div class="col-lg-4">
+		<img [src]='baseUrl + user.ImageSrc' class="img-circle float-right" width="220" height="150" />
+	</div>
+
+	<div class="col-lg-4 text-center text-container">
+		<h4>
+			Your's profile data
+		</h4>
+		<div class="row text-center">
+			Login <i> {{ user.Login }} </i>
+		</div>
+
+		<div class="row text-center">
+			Email - <i> {{ user.Email }} </i>
+		</div>
+
+	</div>
+
+	<div class="col-lg-4">
+		<button type="button" (click)='mode = PROFILE;' [class]='mode== PROFILE ? "btn btn-link active" : "btn btn-link"'>
+            Edit personal information
+        </button>
+		<button type='button' [class]='mode== ARTICLES ? "btn btn-link active" : "btn btn-link"' (click)='mode = ARTICLES;'>
+            Edit articles
+        </button>
+		<button type='button' [class]='mode== CREATE_ARTICLE ? "btn btn-link active" : "btn btn-link"' (click)='gotoNewArticle();'>
+            New article
+        </button>
+	</div>
+
+</main>
+
+<main class="article-container" [hidden]='mode != ARTICLES'>
+
+	<div class="row text-center article-header">
+		Working with articles on site
+	</div>
+
+	<div class="container" *ngFor='let article of articles'>
+		<div class="row article-header-row">
+			<div class="col-lg-6 text-left color-red article-title">
+				{{ article.Title }}
+			</div>
+			<div class="col-lg-6 text-right color-red">
+				{{ article.Tags.join(' ') }}
+			</div>
+		</div>
+		<div class="row article-container-row">
+			<div class="col-lg-3 padding-top-20">
+				<img [src]='baseUrl + article.ImageUrl' class="img-rounded float-right" width='250' height='200' />
+			</div>
+			<div class="col-lg-9 article-content">
+				{{ article.Text.substr(0, 1000) }}
+			</div>
+		</div>
+		<div class="row text-center">
+			<div class="btn edit-btn">
+				<a class='color-red' (click)='onArticleEdit(article)'> Edit article </a>
+				<a class='color-red' (click)='onDeleteArticle(article)'> Delete article </a>
+			</div>
+
+		</div>
+	</div>
+
+	<div class='pagination-container article-pagination-container' [hidden]='articleEnumerable != null && !articleEnumerable.canMoveBack() && !articleEnumerable.canMoveNext()'>
+		<a class='pagination-left' [hidden]='articleEnumerable == null || !articleEnumerable.canMoveBack()' (click)='this.articles = articleEnumerable.Previous();'>
+			<span class='glyphicon glyphicon-chevron-left'> </span>
+		</a>
+		<a class='pagination-home' (click)='this.articles = articleEnumerable.Reset()'>
+			<span class='glyphicon glyphicon-home'> </span>
+		</a>
+		<a class='pagination-right' [hidden]='articleEnumerable != null && !articleEnumerable.canMoveNext()' (click)='this.articles = articleEnumerable.Next();'>
+			<span class='glyphicon glyphicon-chevron-right'> </span>
+		</a>
+	</div>
+
+</main>
+
+<main class="delete-container" [hidden]="mode != DELETE_ARTICLE">
+	<div class="delete-header">
+		Are you sure you want to delete article '{{ article.Title }}' ?
+	</div>
+	<div class="text-center delete-btn-block" [hidden]='isDeleteExecuted'>
+		<button type='button' class="btn btn-success" (click)='onDeleteConfirmed()'>
+            Delete
+        </button>
+		<button type='button' class="btn btn-danger margin-left-40" (click)='this.mode = this.ARTICLES'>
+            Cancel
+        </button>
+	</div>
+
+	<div class="text-center delete-btn-block" [hidden]='!isDeleteExecuted'>
+		{{ responseMessage }}
+	</div>
+</main>
+
+<main class='edit-container' [hidden]='mode != EDIT_ARTICLE && mode != CREATE_ARTICLE '>
+	<form (ngSubmit)='onArticleSubmit()' #articleForm='ngForm'>
+		<div class="row text-center form-header">
+			Write new article
+		</div>
+		<div class="col-lg-8">
+			<div class="row border-underline">
+				<label class="col-lg-2 text-right">
+                    Title 
+                </label>
+
+				<input type='text' class="form-control col-lg-10" required [(ngModel)]='article.Title' name='title' #title='ngModel' />
+
+				<div [class]='!title.touched || title.valid ? "display-none" : "error"'> Title required </div>
+			</div>
+			<div class="row border-underline">
+				<label class="col-lg-2 text-right">
+                    Article image
+                </label>
+
+				<input type='file' class="form-control col-lg-10" (change)='onImageChanged($event)' id='article-image' />
+
+				<div [class]=' image != undefined || !isTouched  ? "display-none" : "error"'> Image required </div>
+
+				<div [class]='article.Id != 0 && !isTouched ? "help" : "display-none"'>
+					Choose new image or we will save current
+				</div>
+
+				<div [class]="!checkImageExtension() ? 'error' : 'display-none' ">
+					Invalid file format
+				</div>
+			</div>
+			<div class="row border-underline">
+				<label class="col-lg-2 text-right">
+                    Article text
+                </label>
+				<textarea rows='10' class="form-control" required name='text' [(ngModel)]='article.Text' #text='ngModel'>
+                </textarea>
+				<div [class]='!text.touched || text.valid  ? "display-none" : "error margin-left-40 "'>
+					Article required
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-4">
+			<h4 class='text-center'> Tags </h4>
+
+			<div class='tag-container'>
+				<a *ngFor='let tag of tags' (click)='addTag(tag)' [class]='selectedTags.indexOf(tag) != -1 ? "tag-link active" : "tag-link" '>
+                    {{ tag.Tag }}
+                </a>
+			</div>
+
+			<div class='pagination-container' [hidden]='tagEnumerable != null && !tagEnumerable.canMoveBack() && ! tagEnumerable.canMoveNext() '>
+				<a class='pagination-left' [hidden]='tagEnumerable != null && !tagEnumerable.canMoveBack()' (click)='this.tags = tagEnumerable.Previous();'>
+					<span class='glyphicon glyphicon-chevron-left'> </span>
+				</a>
+				<a class='pagination-home' (click)='this.tags = tagEnumerable.Reset()'>
+					<span class='glyphicon glyphicon-home'> </span>
+				</a>
+				<a class='pagination-right' [hidden]='tagEnumerable != null && !tagEnumerable.canMoveNext()' (click)='this.tags = tagEnumerable.Next();'>
+					<span class='glyphicon glyphicon-chevron-right'> </span>
+				</a>
+			</div>
+
+		</div>
+		<div class="col-lg-12 row text-center">
+			<input type='submit' class="btn btn-success" value='Publish' [disabled]='!articleForm.form.valid || ( image == undefined && article.Id == 0) || !checkImageExtension()'
+			/>
+		</div>
+	</form>
+</main>
+
+<main class='text-center' [hidden]='mode != PROFILE'>
+	<form method='POST' class='login-form' #editForm='ngForm'>
+
+		<div class='form-group form-header'>
+			Edit account information
+		</div>
+
+		<div class="form-group">
+
+			<label class="col-lg-4 text-right control-label margin-bottom-15">
+                Login
+            </label>
+
+			<div class='col-lg-8 margin-bottom-15'>
+				<input type='text' required class="form-control" placeholder='your login' [(ngModel)]='user.Login' 
+                    name='Login' disabled='disabled' />
+			</div>
+
+		</div>
+
+		<div class="form-group">
+
+			<label class="col-lg-4 text-right control-label margin-bottom-15">
+                Email
+            </label>
+
+			<div class='col-lg-8 margin-bottom-15'>
+				<input type='email' class="form-control" placeholder='your email' [(ngModel)]='user.Email' name='email' 
+                    required #email="ngModel" pattern="[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+" />
+
+				<div [hidden]='!email.touched || email.valid' class="alert alert-danger field-alert">
+					Invalid email
+				</div>
+			</div>
+
+		</div>
+
+		<div class="form-group">
+
+			<label class="col-lg-4 text-right control-label margin-bottom-15">
+                Avatar
+            </label>
+
+			<div class='col-lg-8 margin-bottom-15'>
+				<input type='file' class="form-control" placeholder='your avatar' [(ngModel)]='user.Image' name='image' 
+                #image="ngModel" id='avatar' />
+
+				<div [hidden]='!image.touched || image.valid' class="alert alert-danger field-alert">
+					Image is required
+				</div>
+
+				<div [hidden]='checkImageExtension()' class="alert alert-danger field-alert">
+					Invalid file format
+				</div>
+			
+            </div>
+
+		</div>
+
+		<div class="form-group">
+
+			<label class="col-lg-4 text-right control-label margin-bottom-15">
+                Password
+            </label>
+
+			<div class='col-lg-8 margin-bottom-15'>
+				<input type='password' class="form-control" placeholder='your password' [(ngModel)]='user.Password' 
+                name='password' required minlength="6" #password='ngModel' />
+
+				<div [hidden]='!password.touched || password.valid' class="alert alert-danger field-alert">
+					Invalid password
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="form-group">
+
+			<label class="col-lg-4 text-right control-label margin-bottom-15">
+                    Confirm password
+                </label>
+
+			<div class='col-lg-8 margin-bottom-15'>
+				<input type='password' class="form-control" placeholder='confirm password' [(ngModel)]='confirmPassword' 
+                    name='confirmPassword' #confirmation='ngModel' />
+
+				<div [hidden]='!confirmation.touched || confirmPassword == user.Password' class="alert alert-danger field-alert">
+					Password's doesn't match
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="form-group text-center">
+
+			<button type='submit' class="btn enter-btn" (click)='editUser()' 
+                [disabled]='!editForm.form.valid || confirmPassword != user.Password || !checkImageExtension()'>
+                Edit user
+            </button>
+
+		</div>
+
+	</form>
+</main>
+
+<footer class="col-lg-12">
+	2016 by Swirchkov Wladymir & Grynko Alina & Kovalenko Ekaterina
+</footer>

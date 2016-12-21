@@ -1,0 +1,124 @@
+<header class='row header-row'>    
+
+    <div class=' col-md-2 col-lg-2 text-center'>
+        <h3> ITBlog </h3>
+    </div>
+
+    <div class='col-md-6 col-lg-6 search-container'>
+        <input type='text' placeholder='Enter search query'  class='form-control col-lg-offset-4 search-query' 
+            (ngModelChange)='searchByQuery($event)' [ngModel]='query'/>
+    </div>
+
+    <div class='col-md-2 col-lg-2 text-center link-container' *ngIf = ' user == null '>
+        <a routerLink='/login'> Login </a>
+        <a routerLink='/register'> Register </a>
+    </div>
+
+    <div class='col-md-2 col-lg-2 text-center link-container' *ngIf = ' user != null '>
+        <a class='dropdown-toggle cursor-pointer' type='button' data-toggle='dropdown'> 
+            Hello, {{ user.Login }} 
+            <span class='caret'></span>
+        </a>
+
+        <ul class="dropdown-menu">
+            <li> <a class='cursor-pointer' routerLink='/profile'> Profile </a> </li>
+            <li> <a class="cursor-pointer" (click) = 'logOut()'> Exit </a> </li>
+        </ul>
+    </div>
+
+</header>
+
+<div class="row main-container">
+        
+    <main class="col-lg-9 col-md-9 note-container "> 
+        <div class='no-articles' [hidden] = 'articles.length > 0'>
+            Unfortunaly we can't find any article
+        </div>
+        
+        <div class='panel panel-default' *ngFor='let article of articles' [hidden]='articles.length == 0'>
+            
+            <div class='panel-heading'>
+                {{ article.Title }}
+            </div>
+            
+            <div class='panel-body'>
+                <img [src]='baseUrl + article.ImageUrl' class='img-rounded left-img' width='220' height='150' />
+                {{ article.Text.substr(0, 1500) }}
+            </div>
+
+            <div class='panel-footer back-white'>
+
+                <a *ngFor='let tag of article.Tags' (click)='filterArticlesByTag(tag)'
+                    [class]='selectedTag == tag ? "note-tag active" : "note-tag" ' >
+                    {{ tag }}
+                </a>
+
+                <span class='article-author'>
+                    Author -> {{ article.AuthorName }}
+                </span>
+
+                <a class='go-link' (click) = 'gotoArticle(article)'>
+                    Go to article
+                </a>
+
+            </div>
+        </div>
+
+    </main>
+
+    <aside class="categories-aside">
+
+        <h4 class='text-center'> Tags </h4>
+
+        <div class='tag-container'>
+            <a *ngFor='let tag of tags' (click)='filterArticlesByTag(tag.Tag)'
+                [class] = 'selectedTag == tag.Tag ? "tag-link active" : "tag-link" '>
+                {{ tag.Tag }}
+            </a>
+        </div>
+
+        <div class='pagination-container' 
+            [hidden] = 'tagEnumerable != null && !tagEnumerable.canMoveBack() && ! tagEnumerable.canMoveNext() '>
+            <a class='pagination-left' [hidden]='tagEnumerable != null && !tagEnumerable.canMoveBack()'
+                (click)='this.tags = tagEnumerable.Previous();' >
+                <span class='glyphicon glyphicon-chevron-left'> </span> 
+            </a>
+            <a class='pagination-home'
+                (click)='this.tags = tagEnumerable.Reset()'>
+                <span class='glyphicon glyphicon-home'> </span> 
+            </a>
+            <a class='pagination-right' [hidden]='tagEnumerable != null && !tagEnumerable.canMoveNext()'
+                (click)='this.tags = tagEnumerable.Next();'>
+                <span class='glyphicon glyphicon-chevron-right'> </span> 
+            </a>
+        </div> 
+
+        <a [class] = '(query == null || query == "") && selectedTag == null ? "display-none" : "all-articles" '
+            (click) = 'resetFilter()' >
+            All Articles
+        </a>
+    </aside>
+
+</div>
+
+<div class='pagination-container article-pagination-container' 
+    [hidden] = 'articleEnumerable != null && !articleEnumerable.canMoveBack() && !articleEnumerable.canMoveNext()'>
+    <a class='pagination-left' [hidden]='articleEnumerable == null || !articleEnumerable.canMoveBack()'
+        (click)='this.articles = articleEnumerable.Previous();' >
+        <span class='glyphicon glyphicon-chevron-left'> </span> 
+    </a>
+    <a class='pagination-home'
+        (click)='this.articles = articleEnumerable.Reset()'>
+        <span class='glyphicon glyphicon-home'> </span> 
+    </a>
+    <a class='pagination-right' [hidden]='articleEnumerable != null && !articleEnumerable.canMoveNext()'
+        (click)='this.articles = articleEnumerable.Next();'>
+        <span class='glyphicon glyphicon-chevron-right'> </span> 
+    </a>
+</div> 
+
+<footer>
+    2016 by Swirchkov Wladymir & Grynko Alina & Kovalenko Ekaterina 
+</footer>
+
+<script src='../styles/style.js'> </script>
